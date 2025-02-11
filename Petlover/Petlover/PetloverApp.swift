@@ -11,7 +11,7 @@ import SwiftUI
 struct PetloverApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TabHome()
         }
     }
 }
