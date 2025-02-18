@@ -6,17 +6,34 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		DD373FEB2D5D6D1C003F2BE4 /* CustomTabview.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD373FDD2D5D6D1C003F2BE4 /* CustomTabview.swift */; };
+		DD373FEC2D5D6D1C003F2BE4 /* PetloverApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD373FE82D5D6D1C003F2BE4 /* PetloverApp.swift */; };
+		DD373FED2D5D6D1C003F2BE4 /* TabHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD373FE92D5D6D1C003F2BE4 /* TabHome.swift */; };
+		DD373FEE2D5D6D1C003F2BE4 /* Placeholder.txt in Resources */ = {isa = PBXBuildFile; fileRef = DD373FD52D5D6D1C003F2BE4 /* Placeholder.txt */; };
+		DD373FEF2D5D6D1C003F2BE4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD373FD72D5D6D1C003F2BE4 /* Preview Assets.xcassets */; };
+		DD373FF02D5D6D1C003F2BE4 /* Placeholder1.txt in Resources */ = {isa = PBXBuildFile; fileRef = DD373FD92D5D6D1C003F2BE4 /* Placeholder1.txt */; };
+		DD373FF12D5D6D1C003F2BE4 /* Placeholder2.txt in Resources */ = {isa = PBXBuildFile; fileRef = DD373FDB2D5D6D1C003F2BE4 /* Placeholder2.txt */; };
+		DD373FF22D5D6D1C003F2BE4 /* Placeholder3.txt in Resources */ = {isa = PBXBuildFile; fileRef = DD373FE02D5D6D1C003F2BE4 /* Placeholder3.txt */; };
+		DD373FF32D5D6D1C003F2BE4 /* Placeholder4.txt in Resources */ = {isa = PBXBuildFile; fileRef = DD373FE22D5D6D1C003F2BE4 /* Placeholder4.txt */; };
+		DD373FF42D5D6D1C003F2BE4 /* Placeholder5.txt in Resources */ = {isa = PBXBuildFile; fileRef = DD373FE42D5D6D1C003F2BE4 /* Placeholder5.txt */; };
+		DD373FF52D5D6D1C003F2BE4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD373FE72D5D6D1C003F2BE4 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		DD373FD52D5D6D1C003F2BE4 /* Placeholder.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Placeholder.txt; sourceTree = "<group>"; };
+		DD373FD72D5D6D1C003F2BE4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		DD373FD92D5D6D1C003F2BE4 /* Placeholder1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Placeholder1.txt; sourceTree = "<group>"; };
+		DD373FDB2D5D6D1C003F2BE4 /* Placeholder2.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Placeholder2.txt; sourceTree = "<group>"; };
+		DD373FDD2D5D6D1C003F2BE4 /* CustomTabview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabview.swift; sourceTree = "<group>"; };
+		DD373FE02D5D6D1C003F2BE4 /* Placeholder3.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Placeholder3.txt; sourceTree = "<group>"; };
+		DD373FE22D5D6D1C003F2BE4 /* Placeholder4.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Placeholder4.txt; sourceTree = "<group>"; };
+		DD373FE42D5D6D1C003F2BE4 /* Placeholder5.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Placeholder5.txt; sourceTree = "<group>"; };
+		DD373FE72D5D6D1C003F2BE4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DD373FE82D5D6D1C003F2BE4 /* PetloverApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetloverApp.swift; sourceTree = "<group>"; };
+		DD373FE92D5D6D1C003F2BE4 /* TabHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabHome.swift; sourceTree = "<group>"; };
 		DDD705F02D5BFEFD0073D06D /* Petlover.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Petlover.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		DDD705F22D5BFEFD0073D06D /* Petlover */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Petlover;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		DDD705ED2D5BFEFD0073D06D /* Frameworks */ = {
@@ -29,10 +46,108 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DD373FD62D5D6D1C003F2BE4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				DD373FD52D5D6D1C003F2BE4 /* Placeholder.txt */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		DD373FD82D5D6D1C003F2BE4 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				DD373FD72D5D6D1C003F2BE4 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		DD373FDA2D5D6D1C003F2BE4 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				DD373FD92D5D6D1C003F2BE4 /* Placeholder1.txt */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		DD373FDC2D5D6D1C003F2BE4 /* Ajustes */ = {
+			isa = PBXGroup;
+			children = (
+				DD373FDB2D5D6D1C003F2BE4 /* Placeholder2.txt */,
+			);
+			path = Ajustes;
+			sourceTree = "<group>";
+		};
+		DD373FDE2D5D6D1C003F2BE4 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				DD373FDD2D5D6D1C003F2BE4 /* CustomTabview.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
+		DD373FDF2D5D6D1C003F2BE4 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				DD373FDE2D5D6D1C003F2BE4 /* TabBar */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		DD373FE12D5D6D1C003F2BE4 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				DD373FE02D5D6D1C003F2BE4 /* Placeholder3.txt */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		DD373FE32D5D6D1C003F2BE4 /* Meus pets */ = {
+			isa = PBXGroup;
+			children = (
+				DD373FE22D5D6D1C003F2BE4 /* Placeholder4.txt */,
+			);
+			path = "Meus pets";
+			sourceTree = "<group>";
+		};
+		DD373FE52D5D6D1C003F2BE4 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				DD373FE42D5D6D1C003F2BE4 /* Placeholder5.txt */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		DD373FE62D5D6D1C003F2BE4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DD373FDC2D5D6D1C003F2BE4 /* Ajustes */,
+				DD373FDF2D5D6D1C003F2BE4 /* Components */,
+				DD373FE12D5D6D1C003F2BE4 /* Home */,
+				DD373FE32D5D6D1C003F2BE4 /* Meus pets */,
+				DD373FE52D5D6D1C003F2BE4 /* Onboarding */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		DD373FEA2D5D6D1C003F2BE4 /* Petlover */ = {
+			isa = PBXGroup;
+			children = (
+				DD373FD62D5D6D1C003F2BE4 /* Models */,
+				DD373FE62D5D6D1C003F2BE4 /* Views */,
+				DD373FDA2D5D6D1C003F2BE4 /* ViewModels */,
+				DD373FD82D5D6D1C003F2BE4 /* Preview Content */,
+				DD373FE72D5D6D1C003F2BE4 /* Assets.xcassets */,
+				DD373FE82D5D6D1C003F2BE4 /* PetloverApp.swift */,
+				DD373FE92D5D6D1C003F2BE4 /* TabHome.swift */,
+			);
+			path = Petlover;
+			sourceTree = "<group>";
+		};
 		DDD705E72D5BFEFD0073D06D = {
 			isa = PBXGroup;
 			children = (
-				DDD705F22D5BFEFD0073D06D /* Petlover */,
+				DD373FEA2D5D6D1C003F2BE4 /* Petlover */,
 				DDD705F12D5BFEFD0073D06D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -59,9 +174,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				DDD705F22D5BFEFD0073D06D /* Petlover */,
 			);
 			name = Petlover;
 			packageProductDependencies = (
@@ -109,6 +221,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD373FEE2D5D6D1C003F2BE4 /* Placeholder.txt in Resources */,
+				DD373FEF2D5D6D1C003F2BE4 /* Preview Assets.xcassets in Resources */,
+				DD373FF02D5D6D1C003F2BE4 /* Placeholder1.txt in Resources */,
+				DD373FF12D5D6D1C003F2BE4 /* Placeholder2.txt in Resources */,
+				DD373FF22D5D6D1C003F2BE4 /* Placeholder3.txt in Resources */,
+				DD373FF32D5D6D1C003F2BE4 /* Placeholder4.txt in Resources */,
+				DD373FF42D5D6D1C003F2BE4 /* Placeholder5.txt in Resources */,
+				DD373FF52D5D6D1C003F2BE4 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +239,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD373FEB2D5D6D1C003F2BE4 /* CustomTabview.swift in Sources */,
+				DD373FEC2D5D6D1C003F2BE4 /* PetloverApp.swift in Sources */,
+				DD373FED2D5D6D1C003F2BE4 /* TabHome.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

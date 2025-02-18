@@ -12,6 +12,13 @@ struct TabHome: View {
         TabView {
             Tab {
                 Text("Home")
+            } label: {
+                Text("Test2")
+            }
+            Tab {
+                Text("2")
+            } label: {
+                Text("Test")
             }
         }
     }
