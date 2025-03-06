@@ -24,11 +24,11 @@ struct LargeButton: View {
     
     var body: some View {
         Button {
-            
+            action()
         } label: {
             if type == .primary {
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(enabled ? Color.primary : Color.AppColors.lightGray)
+                    .fill(enabled ? Color.accentColor : Color.AppColors.lightGray)
                     .overlay {
                         Text(label)
                             .foregroundStyle(.white)
@@ -42,6 +42,7 @@ struct LargeButton: View {
                     .foregroundStyle(enabled ? Color.AppColors.secondary60BlueishGray : Color.AppColors.lightGray)
             }
         }
+        .font(.custom("DarkerGrotesque", size: 22))
     }
     
     func secondary() -> Self {
@@ -62,6 +63,6 @@ enum ButtonType {
     LargeButton(label: "Teste") {
         print("teste")
     }
-        .secondary()
+//        .secondary()
 //        .disabled()
 }
