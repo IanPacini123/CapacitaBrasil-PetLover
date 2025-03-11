@@ -33,7 +33,7 @@ struct OrangeButton: View {
             action()
         } label: {
             if type == .primary {
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: 12)
                     .fill(enabled ? Color.accentColor : Color.AppColors.lightGray)
                     .overlay {
                         HStack {
@@ -44,7 +44,7 @@ struct OrangeButton: View {
                         .foregroundStyle(Color.white)
                     }
             } else {
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: 12)
                     .stroke(lineWidth: 4)
                     .fill(enabled ? Color.accentColor : Color.AppColors.lightGray)
                     .overlay {
@@ -79,7 +79,8 @@ struct OrangeButton: View {
     } action: {
         print("testing")
     }
+    .frame(width: 200, height: 60)
 //    .disabled()
-    .secondary()
+//    .secondary()
 
 }
