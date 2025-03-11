@@ -43,6 +43,7 @@ struct LargeButton: View {
             }
         }
         .font(.custom("DarkerGrotesque", size: 22))
+        .disabled(!enabled)
     }
     
     func secondary() -> Self {
