@@ -58,7 +58,7 @@ struct OrangeButton: View {
                     }
             }
         }
-        .font(.custom("DarkerGrotesque", size: 17))
+        .font(Font.appFontDarkerGrotesque(darkness: .Bold, size: 17))
         .disabled(!enabled)
     }
     
