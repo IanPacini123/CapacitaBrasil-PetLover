@@ -43,7 +43,8 @@ struct LargeButton: View {
                     .foregroundStyle(enabled ? Color.AppColors.secondary60BlueishGray : Color.AppColors.lightGray)
             }
         }
-        .font(.custom("DarkerGrotesque", size: 22))
+        .font(Font.appFontDarkerGrotesque(darkness: .Bold, size: 22))
+        .disabled(!enabled)
     }
     
     func secondary() -> Self {
