@@ -17,9 +17,10 @@ struct AddPetButton: View {
                     Circle()
                         .foregroundStyle(Color.AppColors.primary20NearWhite)
                         .overlay(
-                            Image("Images/Buttons/AddButtonPetPaw")
+                            Image("IconPawSpecies")
                                 .resizable()
                                 .scaledToFit()
+                                .foregroundStyle(Color.AppColors.primary40LightOrange)
                                 .padding(.horizontal, 34)
                         )
                 }
