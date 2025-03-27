@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct PetLoverApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            PetTestesView()
         }
         .modelContainer(for: [Pet.self, PetDocument.self])
     }

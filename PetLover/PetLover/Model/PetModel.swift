@@ -8,10 +8,9 @@
 import SwiftData
 import Foundation
 
-
 @Model
-
 class Pet: Identifiable {
+    var id: UUID
     var name: String
     var birthDate: Date
     var specie: SpeciesOptions
@@ -32,9 +31,10 @@ class Pet: Identifiable {
         castrationStatus: CastrationStatus,
         weight: Double,
         infos: String,
-        petDocuments: [PetDocument],
+        petDocuments: [PetDocument] = [],
         gender: GenderOptions
     ) {
+        self.id = UUID()
         self.name = name
         self.birthDate = birthDate
         self.specie = specie
@@ -49,9 +49,7 @@ class Pet: Identifiable {
 }
 
 enum CastrationStatus: String, Codable, CaseIterable, Identifiable {
-    var id: Self {
-        self
-    }
+    var id: Self { self }
     case yes, no, unknown
     
     var displayText: String {
@@ -64,9 +62,7 @@ enum CastrationStatus: String, Codable, CaseIterable, Identifiable {
 }
 
 enum GenderOptions: String, Codable, CaseIterable, Identifiable {
-    var id: Self {
-        self
-    }
+    var id: Self { self }
     case female, male
     
     var displayText: String {
@@ -78,9 +74,7 @@ enum GenderOptions: String, Codable, CaseIterable, Identifiable {
 }
 
 enum SpeciesOptions: String, Codable, CaseIterable, Identifiable {
-    var id: Self {
-        self
-    }
+    var id: Self { self }
     case dog, bird, cat
     
     var displayName: String {
