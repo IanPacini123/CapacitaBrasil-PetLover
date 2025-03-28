@@ -34,7 +34,7 @@ struct DayInlineCalendar: View {
         }
     }
     
-    func selected(isSelected _ : Bool) -> Self {
+    func selected(_ isSelected : Bool) -> Self {
         DayInlineCalendar(date: self.date, isSelected: isSelected)
     }
 }
