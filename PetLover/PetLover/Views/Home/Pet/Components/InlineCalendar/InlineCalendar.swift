@@ -10,37 +10,35 @@ import SwiftUI
 struct InlineCalendar: View {
     @State var selectedDate = Date.now
 
-    var dates: [Date] {
-        let today = Date()
-        var sequence = DateSequence(start: today, value: -1) // Datas para trás
-        let pastDates = Array(sequence.prefix(365))
-        
-        sequence = DateSequence(start: today, value: 1) // Datas para frente
-        let futureDates = Array(sequence.prefix(365))
-        
+    private var dates: [Date] {
+            let calendar = Calendar.current
+            let today = calendar.startOfDay(for: Date())
+            
+            let pastDates = (1...365).compactMap { calendar.date(byAdding: .day, value: -$0, to: today) }
+            let futureDates = (1...365).compactMap { calendar.date(byAdding: .day, value: $0, to: today) }
+            
         return pastDates.reversed() + [today] + futureDates
-    }
+        }
     
     var body: some View {
         ScrollViewReader { proxy in
-            ScrollView(.horizontal) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 LazyHGrid(rows: [.init()], spacing: 12) {
                     ForEach(Array(dates.enumerated()), id: \.element) { index, day  in
                         Button {
                             selectedDate = day
                         } label: {
                             DayInlineCalendar(date: day)
-                                .selected(selectedDate.formatted(.dateTime .day()) == day.formatted(.dateTime .day()))
+                                .selected(selectedDate.asUniqueString() == day.asUniqueString())
                         }
-                        .id(day.formatted(.dateTime .day()))
+                        .id(day.asUniqueString())
                     }
                 }
             }
             .onAppear {
-//                if let today = dates.first(where: { Calendar.current.isDate($0, inSameDayAs: Date()) }) {
-//                    proxy.scrollTo(today, anchor: .leading)
-//                }
-                proxy.scrollTo(Date.now.formatted(.dateTime .day()), anchor: .leading)
+                if dates.first(where: { Calendar.current.isDate($0, inSameDayAs: Date()) }) != nil {
+                    proxy.scrollTo(Date.now.asUniqueString(), anchor: .init(x: 0.005, y: 0.5))
+                }
             }
         }
     }
@@ -50,7 +48,7 @@ struct InlineCalendar: View {
     InlineCalendar()
 }
 
-struct DateSequence: Sequence, IteratorProtocol {
+private struct DateSequence: Sequence, IteratorProtocol {
     private var currentDate: Date
     private let calendar: Calendar
     private let component: Calendar.Component
@@ -66,5 +64,11 @@ struct DateSequence: Sequence, IteratorProtocol {
     mutating func next() -> Date? {
         defer { currentDate = calendar.date(byAdding: component, value: value, to: currentDate) ?? currentDate }
         return currentDate
+    }
+}
+
+private extension Date {
+    func asUniqueString() -> String {
+        return self.formatted(.iso8601 .day() .month() .year())
     }
 }
