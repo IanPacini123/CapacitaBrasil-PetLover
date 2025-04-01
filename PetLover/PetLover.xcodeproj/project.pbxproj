@@ -21,6 +21,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		364192492D8A37650069268E /* New Folder */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "New Folder";
+			sourceTree = "<group>";
+		};
 		DD5B273A2D6FC3A60021541C /* PetLover */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -45,6 +50,7 @@
 		DD5B272F2D6FC3A50021541C = {
 			isa = PBXGroup;
 			children = (
+				364192492D8A37650069268E /* New Folder */,
 				DD5B273A2D6FC3A60021541C /* PetLover */,
 				DD5B27392D6FC3A60021541C /* Products */,
 			);
@@ -74,6 +80,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				364192492D8A37650069268E /* New Folder */,
 				DD5B273A2D6FC3A60021541C /* PetLover */,
 			);
 			name = PetLover;
@@ -265,7 +272,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PetLover/Preview Content\"";
-				DEVELOPMENT_TEAM = ZGZHU6QZW7;
+				DEVELOPMENT_TEAM = 2BF575N85D;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PetLover/Info.plist;
@@ -295,7 +302,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PetLover/Preview Content\"";
-				DEVELOPMENT_TEAM = ZGZHU6QZW7;
+				DEVELOPMENT_TEAM = 2BF575N85D;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PetLover/Info.plist;
