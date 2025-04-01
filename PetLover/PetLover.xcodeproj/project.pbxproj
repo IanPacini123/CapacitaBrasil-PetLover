@@ -10,14 +10,22 @@
 		DD5B27382D6FC3A60021541C /* PetLover.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PetLover.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		364192492D8A37650069268E /* New Folder */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "New Folder";
-			sourceTree = "<group>";
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		DD835E542D96146A00447953 /* Exceptions for "PetLover" folder in "PetLover" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = DD5B27372D6FC3A50021541C /* PetLover */;
 		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
 		DD5B273A2D6FC3A60021541C /* PetLover */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				DD835E542D96146A00447953 /* Exceptions for "PetLover" folder in "PetLover" target */,
+			);
 			path = PetLover;
 			sourceTree = "<group>";
 		};
@@ -37,7 +45,6 @@
 		DD5B272F2D6FC3A50021541C = {
 			isa = PBXGroup;
 			children = (
-				364192492D8A37650069268E /* New Folder */,
 				DD5B273A2D6FC3A60021541C /* PetLover */,
 				DD5B27392D6FC3A60021541C /* Products */,
 			);
@@ -67,7 +74,6 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				364192492D8A37650069268E /* New Folder */,
 				DD5B273A2D6FC3A60021541C /* PetLover */,
 			);
 			name = PetLover;
@@ -259,9 +265,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PetLover/Preview Content\"";
-				DEVELOPMENT_TEAM = 2BF575N85D;
+				DEVELOPMENT_TEAM = ZGZHU6QZW7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PetLover/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -288,9 +295,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PetLover/Preview Content\"";
-				DEVELOPMENT_TEAM = 2BF575N85D;
+				DEVELOPMENT_TEAM = ZGZHU6QZW7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PetLover/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
