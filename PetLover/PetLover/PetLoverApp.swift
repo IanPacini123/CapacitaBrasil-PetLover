@@ -11,7 +11,7 @@ import SwiftUI
 struct PetLoverApp: App {
     var body: some Scene {
         WindowGroup {
-            InlineCalendar()
+            ContentView()
         }
     }
 }
