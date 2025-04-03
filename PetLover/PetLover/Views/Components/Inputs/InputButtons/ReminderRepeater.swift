@@ -68,21 +68,3 @@ struct ReminderRepeaterButton: View {
     @Previewable @State var selectedDays: Set<WeekDays> = []
     ReminderRepeaterList(selectedDays: $selectedDays)
 }
-
-
-// passar isso aqui pra dentro do modelo do lembrete depois
-enum WeekDays: String, Codable, CaseIterable {
-    case domingo, segunda, terca, quarta, quinta, sexta, sabado
-
-    var displayText: String {
-        switch self {
-        case .domingo: return "D"
-        case .segunda: return "S"
-        case .terca: return "T"
-        case .quarta: return "Q"
-        case .quinta: return "Q"
-        case .sexta: return "S"
-        case .sabado: return "S"
-        }
-    }
-}
