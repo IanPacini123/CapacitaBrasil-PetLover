@@ -10,6 +10,7 @@ import Foundation
 import SwiftUI
 
 class ReminderViewModel: ObservableObject {
+    @Published var reminders = [Reminder]()
     
     func createReminder(
         context: ModelContext,
@@ -29,71 +30,107 @@ class ReminderViewModel: ObservableObject {
             startTime: startTime,
             endTime: endTime
         )
-        
+
         pet.reminders.append(newReminder)
         context.insert(newReminder)
-        
+
         do {
             try context.save()
         } catch {
             print("Erro ao salvar lembrete: \(error.localizedDescription)")
         }
-
     }
     
-//    func fetchReminder(context: ModelContext) {
-//        do {
-//            let descriptor = FetchDescriptor<Pet>(sortBy: [SortDescriptor(\.name)])
-//            pets = try context.fetch(descriptor)
-//        } catch {
-//            print("Pets não encontrados")
-//        }
-//    }
+    func updateReminder(
+        context: ModelContext,
+        reminder: Reminder,
+        title: String? = nil,
+        date: Date? = nil,
+        category: ReminderCategory? = nil,
+        repeatDays: Set<WeekDays>? = nil,
+        startTime: Date? = nil,
+        endTime: Date? = nil
+    ) {
+        reminder.title = title ?? reminder.title
+        reminder.date = date ?? reminder.date
+        reminder.category = category ?? reminder.category
+        reminder.repeatDays = repeatDays ?? reminder.repeatDays
+        reminder.startTime = startTime ?? reminder.startTime
+        reminder.endTime = endTime ?? reminder.endTime
+
+        do {
+            try context.save()
+        } catch {
+            print("Erro ao atualizar lembrete: \(error.localizedDescription)")
+        }
+    }
+
+    func deleteReminder(context: ModelContext, pet: Pet, reminder: Reminder) {
+        pet.reminders.removeAll { $0.id == reminder.id }
+        context.delete(reminder)
+
+        do {
+            try context.save()
+        } catch {
+            print("Erro ao remover lembrete: \(error.localizedDescription)")
+        }
+    }
 }
 
-
 struct ReminderView: View {
+    @Environment(\.modelContext) private var context
     @StateObject var viewModel = ReminderViewModel()
     @StateObject var petViewModel = PetViewModel()
-    @Environment(\ .modelContext) private var context
-    @State var title: String = ""
-    @State var date = Date()
-    @State var category: ReminderCategory = .eventos
-    @State var startTime = Date()
-    @State var endTime = Date()
-    @State var repeatDays: Set<WeekDays> = []
-    @State var selectedPet: Pet?
+    
+    @State private var title: String = ""
+    @State private var date = Date()
+    @State private var category: ReminderCategory = .eventos
+    @State private var startTime = Date()
+    @State private var endTime: Date? = nil
+    @State private var repeatDays: Set<WeekDays> = []
+    @State private var selectedPet: Pet?
+    @State private var endTimePresent: Bool = false
     
     var body: some View {
         ScrollView {
-            VStack {
-                HStack {
-                    ForEach(petViewModel.pets, id: \.id) { pet in
-                        VStack {
-                            Text(pet.name)
-                            Text(pet.reminders.first?.title ?? "Sem lembrete")
+            VStack(alignment: .leading, spacing: 16) {
+                Text("Criar lembrete:")
+                    .font(.title)
+                    .fontWeight(.semibold)
+                
+                Text("Selecione um pet:")
+                if !petViewModel.pets.isEmpty {
+                    Picker("Pet", selection: $selectedPet) {
+                        ForEach(petViewModel.pets, id: \.id) { pet in
+                            Text(pet.name).tag(pet as Pet?)
                         }
-                        
                     }
+                    .pickerStyle(.menu)
+                } else {
+                    Text("Nenhum pet adicionado")
+                        .padding()
+                        .background(Color.gray.opacity(0.2))
+                        .cornerRadius(8)
                 }
                 
-                Text("Selecione um Pet")
-                Picker("Pet", selection: $selectedPet) {
-                    ForEach(petViewModel.pets, id: \..id) { pet in
-                        Text(pet.name).tag(pet as Pet?)
-                    }
-                }
-                .pickerStyle(.menu)
-                
+                Text("Título do lembrete:")
                 TextField("Título do lembrete", text: $title)
                     .textFieldStyle(.roundedBorder)
                 
                 DatePicker("Data", selection: $date, displayedComponents: .date)
                 DatePicker("Hora de início", selection: $startTime, displayedComponents: .hourAndMinute)
-                DatePicker("Hora de fim", selection: $endTime, displayedComponents: .hourAndMinute)
+                
+                Toggle("Hora de fim", isOn: $endTimePresent)
+                
+                if endTimePresent {
+                    DatePicker("Hora de fim", selection: Binding(
+                        get: { endTime ?? Date() },
+                        set: { endTime = $0 }
+                    ), displayedComponents: .hourAndMinute)
+                }
                 
                 Picker("Categoria", selection: $category) {
-                    ForEach(ReminderCategory.allCases, id: \..self) {
+                    ForEach(ReminderCategory.allCases, id: \.self) {
                         Text($0.displayText).tag($0)
                     }
                 }
@@ -101,65 +138,97 @@ struct ReminderView: View {
                 
                 ReminderRepeaterList(selectedDays: $repeatDays)
                 
+                Button("Salvar Lembrete") {
+                    
+                    guard let pet = selectedPet else { return }
+                    
+                    viewModel.createReminder(
+                        context: context,
+                        pet: pet,
+                        title: title,
+                        date: date,
+                        category: category,
+                        repeatDays: repeatDays,
+                        startTime: startTime,
+                        endTime: endTimePresent ? endTime : nil
+                    )
+                    
+                    title = ""
+                    date = Date()
+                    startTime = Date()
+                    endTime = nil
+                    endTimePresent = false
+                    repeatDays = []
+                    
+                }
+                .buttonStyle(.borderedProminent)
+                .padding()
+                .disabled(selectedPet == nil)
                 
+                Text("Lista de lembretes:")
+                    .font(.title)
+                    .fontWeight(.semibold)
+                
+                ForEach(petViewModel.pets, id: \.id) { pet in
+                    if !pet.reminders.isEmpty {
+                        VStack(alignment: .leading) {
+                            Text(pet.name)
+                                .font(.headline)
+                                .padding(.bottom, 4)
+                            
+                            ForEach(pet.reminders, id: \.id) { reminder in
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text("Título: \(reminder.title)")
+                                        .font(.headline)
+                                    
+                                    Text("Data: \(reminder.date.formatted(date: .abbreviated, time: .omitted))")
+                                    
+                                    Text("Início: \(reminder.startTime.formatted(date: .omitted, time: .shortened))")
+                                    
+                                    Text("Categoria: \(reminder.category.displayText)")
+                                    
+                                    if !reminder.repeatDays.isEmpty {
+                                        Text("Repetição: \(reminder.repeatDays.map { $0.displayText }.joined(separator: ", "))")
+                                    } else {
+                                        Text("Repetição: não se repete")
+                                    }
+                                    
+                                    HStack {
+                                        Button("Editar") {
+                                            viewModel.updateReminder(
+                                                context: context,
+                                                reminder: reminder,
+                                                title: "\(reminder.title) (editado)"
+                                            )
+                                        }
+                                        .buttonStyle(.bordered)
+                                        
+                                        Button("Remover") {
+                                            viewModel.deleteReminder(context: context, pet: pet, reminder: reminder)
+                                        }
+                                        .buttonStyle(.bordered)
+                                    }
+                                }
+                                .padding()
+                                .background(Color.gray.opacity(0.05))
+                                .cornerRadius(8)
+                            }
+                        }
+                        .padding()
+                        .background(Color.gray.opacity(0.1))
+                        .cornerRadius(8)
+                    }
+                }
             }
+            .padding()
         }
-//        ScrollView {
-//            VStack(alignment: .leading, spacing: 20) {
-//                Text("Selecione um Pet")
-//                Picker("Pet", selection: $selectedPet) {
-//                    ForEach(petViewModel.pets, id: \..id) { pet in
-//                        Text(pet.name).tag(pet as Pet?)
-//                    }
-//                }
-//                .pickerStyle(.menu)
-//
-//                TextField("Título do lembrete", text: $title)
-//                    .textFieldStyle(.roundedBorder)
-//
-//                DatePicker("Data", selection: $date, displayedComponents: .date)
-//                DatePicker("Hora de início", selection: $startTime, displayedComponents: .hourAndMinute)
-//                DatePicker("Hora de fim", selection: $endTime, displayedComponents: .hourAndMinute)
-//
-//                Picker("Categoria", selection: $category) {
-//                    ForEach(ReminderCategory.allCases, id: \..self) {
-//                        Text($0.displayText).tag($0)
-//                    }
-//                }
-//                .pickerStyle(.segmented)
-//
-//                ReminderRepeaterList(selectedDays: $repeatDays)
-//
-//                Button("Salvar Lembrete") {
-//                  //
-//                }
-//                .buttonStyle(.borderedProminent)
-//                .padding(.top)
-//
-//                Divider()
-//
-//                ForEach(petViewModel.pets, id: \..id) { pet in
-//                    VStack(alignment: .leading) {
-//                        Text(pet.name).font(.headline)
-//                        ForEach(pet.reminders, id: \..id) { reminder in
-//                            HStack {
-//                                Text(reminder.title)
-//                                Spacer()
-//                                Text(reminder.date, style: .date)
-//                            }
-//                            .padding(.vertical, 2)
-//                        }
-//                    }
-//                    .padding()
-//                    .background(Color.gray.opacity(0.1))
-//                    .cornerRadius(8)
-//                }
-//            }
-//            .padding()
-//        }
+        .onAppear {
+            petViewModel.fetchPets(context: context)
+        }
     }
 }
 
 #Preview {
     ReminderView()
+        .modelContainer(for: [Pet.self, Reminder.self], inMemory: true)
 }
