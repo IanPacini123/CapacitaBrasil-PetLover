@@ -199,15 +199,15 @@ struct TimeSelect: View {
     }
 
     private func updateUserDates() {
-        if endTimeOfDay == .AM {
-            userStartDate = startDate
-            userEndDate = endDate
-        }
-        if endTimeOfDay == .PM {
-            userEndDate = endDate.addingTimeInterval(3600 * 12)
-        }
         if startTimeOfDay == .PM {
             userStartDate = startDate.addingTimeInterval(3600 * 12)
+            userEndDate = endDate.addingTimeInterval(3600 * 12)
+        } else if endTimeOfDay == .PM {
+            userStartDate = startDate
+            userEndDate = endDate.addingTimeInterval(3600 * 12)
+        } else {
+            userStartDate = startDate
+            userEndDate = endDate
         }
     }
 }
