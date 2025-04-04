@@ -77,7 +77,7 @@ struct TimeSelect: View {
         }
     }
     
-    @ViewBuilder func createRow(title: String, date: Binding<Date>, timeOfDay: Binding<TimeOfDay>, dateRange: ClosedRange<Date>) -> some View {
+    @ViewBuilder private func createRow(title: String, date: Binding<Date>, timeOfDay: Binding<TimeOfDay>, dateRange: ClosedRange<Date>) -> some View {
         HStack {
             Text(title)
             
@@ -110,7 +110,7 @@ struct TimeSelect: View {
         }
     }
     
-    @ViewBuilder func AMPMSelector(timeOfDay: TimeOfDay) -> some View {
+    @ViewBuilder private func AMPMSelector(timeOfDay: TimeOfDay) -> some View {
         HStack {
             Text("AM")
                 .foregroundStyle(timeOfDay.rawValue == "AM" ? .white : .black)
@@ -143,7 +143,7 @@ struct TimeSelect: View {
         }
     }
     
-    var reusableBG: some View {
+    private var reusableBG: some View {
         RoundedRectangle(cornerRadius: 10)
             .foregroundStyle(Color.AppColors.lightGrayButtonBackground)
             .overlay {
@@ -212,7 +212,7 @@ struct TimeSelect: View {
     }
 }
 
-struct previewStruct: View {
+private struct previewStruct: View {
     @State var startDate = Date()
     @State var endDate = Date()
     @State var startTimeOfDay: TimeOfDay = .AM
