@@ -12,7 +12,8 @@ import SwiftData
 struct PetLoverApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            previewStruct()
+                .padding()
         }
         .modelContainer(for: [Pet.self, PetDocument.self])
     }
