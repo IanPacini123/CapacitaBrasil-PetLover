@@ -53,25 +53,33 @@ struct TimeSelect: View {
         }
         .onChange(of: startDate) { oldValue, newValue in
             if startDate > endDate {
-                endDate = startDate
+                withAnimation(.easeInOut) {
+                    endDate = startDate
+                }
             }
             updateUserDates()
         }
         .onChange(of: endDate) { oldValue, newValue in
             if startDate > endDate && startTimeOfDay == endTimeOfDay {
-                endDate = startDate
+                withAnimation(.easeInOut) {
+                    endDate = startDate
+                }
             }
             updateUserDates()
         }
         .onChange(of: startTimeOfDay) { oldValue, newValue in
             if startTimeOfDay == .PM && endTimeOfDay == .AM {
-                endTimeOfDay = .PM
+                withAnimation(.easeInOut) {
+                    endTimeOfDay = .PM
+                }
             }
             updateUserDates()
         }
         .onChange(of: endTimeOfDay) { oldValue, newValue in
             if startTimeOfDay == .PM && endTimeOfDay == .AM {
-                startTimeOfDay = .AM
+                withAnimation(.easeInOut) {
+                    startTimeOfDay = .AM
+                }
             }
             updateUserDates()
         }
@@ -188,7 +196,10 @@ struct TimeSelect: View {
         let start = startDate ?? fixedStart
         
         if startTimeOfDay == .PM {
-            return start...fixedEnd
+            if start < fixedEnd {
+                return start...fixedEnd
+            }
+            return fixedStart...fixedEnd
         } else if endTimeOfDay == .PM {
             return fixedStart...fixedEnd
         } else {
@@ -212,21 +223,15 @@ struct TimeSelect: View {
     }
 }
 
-private struct previewStruct: View {
-    @State var startDate = Date()
-    @State var endDate = Date()
+struct previewStruct: View {
+    @State var startDate = Date.now
+    @State var endDate = Date.now
     @State var startTimeOfDay: TimeOfDay = .AM
     @State var endTimeOfDay: TimeOfDay = .AM
     
     var body: some View {
         VStack {
             TimeSelect(startingDate: $startDate, endingDate: $endDate, startTimeOfDay: $startTimeOfDay, endTimeOfDay: $endTimeOfDay)
-                .onAppear {
-                    let calendar = Calendar.current
-                    let components = DateComponents(year: 2025, month: 4, day: 4, hour: 8, minute: 0, second: 0)
-                    
-                    self.startDate = calendar.date(from: components)!
-                }
             
             Group {
                 Text(startDate.formatted(.dateTime .day() .month() .year() .hour() . minute()))
