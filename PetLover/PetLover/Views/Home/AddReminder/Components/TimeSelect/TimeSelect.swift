@@ -223,7 +223,7 @@ struct TimeSelect: View {
     }
 }
 
-struct previewStruct: View {
+private struct previewStruct: View {
     @State var startDate = Date.now
     @State var endDate = Date.now
     @State var startTimeOfDay: TimeOfDay = .AM
