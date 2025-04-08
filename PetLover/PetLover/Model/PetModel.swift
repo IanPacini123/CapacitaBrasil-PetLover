@@ -21,6 +21,7 @@ class Pet: Identifiable {
     var infos: String
     var petDocuments: [PetDocument]
     var gender: GenderOptions
+    var reminders: [Reminder] = []
     
     init(
         name: String,
@@ -32,7 +33,8 @@ class Pet: Identifiable {
         weight: Double,
         infos: String,
         petDocuments: [PetDocument] = [],
-        gender: GenderOptions
+        gender: GenderOptions,
+        reminders: [Reminder] = []
     ) {
         self.id = UUID()
         self.name = name
@@ -45,6 +47,7 @@ class Pet: Identifiable {
         self.infos = infos
         self.petDocuments = petDocuments
         self.gender = gender
+        self.reminders = reminders
     }
 }
 
