@@ -205,7 +205,6 @@ struct PetTestesView: View {
 }
 
 
-
 #Preview {
     PetTestesView()
         .modelContainer(for: Pet.self, inMemory: true)
