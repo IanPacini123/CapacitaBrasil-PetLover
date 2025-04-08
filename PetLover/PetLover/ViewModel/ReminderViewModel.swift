@@ -77,7 +77,7 @@ class ReminderViewModel: ObservableObject {
     }
 }
 
-struct ReminderView: View {
+private struct ReminderView: View {
     @Environment(\.modelContext) private var context
     @StateObject var viewModel = ReminderViewModel()
     @StateObject var petViewModel = PetViewModel()
