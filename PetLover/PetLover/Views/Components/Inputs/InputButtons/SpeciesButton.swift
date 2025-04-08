@@ -43,11 +43,13 @@ struct SpeciesButton: View {
     }
 }
 
-enum Species: String {
+enum Species: String, CaseIterable, Identifiable {
     case Cachorro
     case Gato
     case Passaro
     case Outro
+    
+    var id: String { self.rawValue }
     
     func image() -> Image {
         switch self {

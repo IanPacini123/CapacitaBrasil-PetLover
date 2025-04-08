@@ -34,7 +34,7 @@ struct SeletorInput: View {
                     .stroke(lineWidth: 1)
                     .foregroundStyle(.black)
             }
-            .padding()
+            .padding(.horizontal)
         }
     }
 }
