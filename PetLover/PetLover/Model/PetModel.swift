@@ -6,6 +6,7 @@
 //
 
 import SwiftData
+import SwiftUI
 import Foundation
 
 @Model
@@ -21,6 +22,7 @@ class Pet: Identifiable {
     var infos: String
     var petDocuments: [PetDocument]
     var gender: GenderOptions
+    var reminders: [Reminder] = []
     
     init(
         name: String,
@@ -32,7 +34,8 @@ class Pet: Identifiable {
         weight: Double,
         infos: String,
         petDocuments: [PetDocument] = [],
-        gender: GenderOptions
+        gender: GenderOptions,
+        reminders: [Reminder] = []
     ) {
         self.id = UUID()
         self.name = name
@@ -45,6 +48,7 @@ class Pet: Identifiable {
         self.infos = infos
         self.petDocuments = petDocuments
         self.gender = gender
+        self.reminders = reminders
     }
 }
 
@@ -73,7 +77,7 @@ enum GenderOptions: String, Codable, CaseIterable, Identifiable {
     }
 }
 
-enum SpeciesOptions: String, Codable, CaseIterable, Identifiable {
+enum SpeciesOptions: String, Codable, CaseIterable, Identifiable, Equatable {
     var id: Self { self }
     case dog, bird, cat
     
@@ -84,4 +88,16 @@ enum SpeciesOptions: String, Codable, CaseIterable, Identifiable {
         case .cat: return "Gato"
         }
     }
+    
+    func image() -> Image {
+        switch self {
+        case .dog:
+            return Image("IconDog")
+        case .cat:
+            return Image("IconCat")
+        case .bird:
+            return Image("IconBird")
+        }
+    }
+    
 }
