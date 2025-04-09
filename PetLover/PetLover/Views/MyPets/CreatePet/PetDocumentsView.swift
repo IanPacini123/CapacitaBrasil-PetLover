@@ -15,6 +15,13 @@ struct PetDocumentsView: View {
                 NavigationLink(destination: PetInfosView(), label: {
                     Text("Ir")
                 })
+                NavigationLink(destination: PetMedicalView(), label: {
+                    Text("medic")
+                })
+                NavigationLink(destination: PetProfileView(), label: {
+                    Text("foto")
+                })
+                
             }
         }
     }

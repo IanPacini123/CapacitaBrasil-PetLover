@@ -23,7 +23,7 @@ struct PetInfosView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                VStack {
+                VStack(spacing: 8) {
                     Text("Informações básicas")
                         .appFontDarkerGrotesque(darkness: .SemiBold, size: 24)
                     Text("Insira as informações primárias do seu pet!")
@@ -81,8 +81,8 @@ struct PetInfosView: View {
                 }
             }
             .sheet(isPresented: $showGenderPicker) {
-                VStack(spacing: 24) {
-                    Text("Selecione o gênero")
+                VStack(alignment: .leading, spacing: 24) {
+                    Text("Selecione o gênero:")
                         .appFontDarkerGrotesque(darkness: .SemiBold, size: 20)
                     
                     Button(action: {
@@ -92,17 +92,11 @@ struct PetInfosView: View {
                         Text("Fêmea")
                             .foregroundStyle(gender == .female ? .white : .black)
                             .padding(.vertical, 10)
-                            .padding(.horizontal, 42)
+                            .padding(.horizontal, 130)
                             .background {
-                                if gender == .female {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .foregroundStyle(Color.AppColors.secondary40Blue)
-                                } else {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(lineWidth: 2)
-                                        .foregroundStyle(.black)
-                                }
-                                
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(lineWidth: 2)
+                                    .foregroundStyle(.black)
                             }
                     })
                     
@@ -113,21 +107,16 @@ struct PetInfosView: View {
                         Text("Macho")
                             .foregroundStyle(gender == .male ? .white : .black)
                             .padding(.vertical, 10)
-                            .padding(.horizontal, 42)
+                            .padding(.horizontal, 130)
                             .background {
-                                if gender == .male {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .foregroundStyle(Color.AppColors.secondary40Blue)
-                                } else {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(lineWidth: 2)
-                                        .foregroundStyle(.black)
-                                }
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(lineWidth: 2)
+                                    .foregroundStyle(.black)
+                                
                             }
                     })
                     
                 }
-                .padding()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(
                     Color.AppColors.nearNeutralLightLightGray.ignoresSafeArea()

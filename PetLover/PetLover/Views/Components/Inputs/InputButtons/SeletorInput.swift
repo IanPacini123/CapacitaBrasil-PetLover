@@ -17,7 +17,7 @@ struct SeletorInput: View {
             HStack {
                 Text(label)
                     .foregroundStyle(.black)
-                    .appFontDarkerGrotesque(darkness: .Bold, size: 14)
+                    .appFontDarkerGrotesque(darkness: .Medium, size: 14)
                     .foregroundStyle(Color.AppColors.secondary70DarkBlue)
                     .padding(.vertical, 14)
                     .padding(.leading, 10)

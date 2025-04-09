@@ -19,14 +19,14 @@ struct MultilineTextField: View {
             ZStack(alignment: .topLeading) {
                 if text.isEmpty {
                     Text(placeholder)
-                        .font(.custom("Darker Grotesque", size: 14).weight(.bold))
+                        .font(.custom("Darker Grotesque", size: 14).weight(.medium))
                         .foregroundColor(Color.AppColors.secondary70DarkBlue)
                         .padding(.top, 12)
                         .padding(.leading, 8)
                 }
                 
                 TextEditor(text: $text)
-                    .font(.custom("Darker Grotesque", size: 14).weight(.bold))
+                    .font(.custom("Darker Grotesque", size: 14).weight(.medium))
                     .foregroundColor(.black)
                     .padding(.leading, 4)
                     .background(Color.clear)
