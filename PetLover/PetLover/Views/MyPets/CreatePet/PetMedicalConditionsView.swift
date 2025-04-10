@@ -7,15 +7,17 @@
 
 import SwiftUI
 
-struct PetMedicalView: View {
+struct PetMedicalConditionsView: View {
     @Environment(\.dismiss) var dismiss
+    @Binding var path: NavigationPath
+    
     @State var petWeight: Double?
     @State var isWeightPickerPresented = false
     @State var castrationStatus: CastrationStatus?
     @State var petInfos: String = ""
     @State var buttonPressed: Bool = false
 
-    let weightValues: [Double] = stride(from: 0.1, through: 100, by: 0.1).map { $0 }
+    private let weightValues: [Double] = stride(from: 0.1, through: 100, by: 0.1).map { $0 }
 
     var body: some View {
         ScrollView {
@@ -104,7 +106,7 @@ struct PetMedicalView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                   // nav path aqui
+                    path.append(PetFlowDestination.petDocuments)
                 }) {
                    Text("Avançar")
                         .appFontDarkerGrotesque(darkness: .SemiBold, size: 17)
@@ -144,7 +146,9 @@ struct PetMedicalView: View {
     }
 }
 
-
 #Preview {
-    PetMedicalView()
+    PetMedicalConditionsView(
+        path: .constant(NavigationPath())
+    )
 }
+

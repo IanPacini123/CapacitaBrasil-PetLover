@@ -7,18 +7,20 @@
 
 import SwiftUI
 import Foundation
+import SwiftData
 
-struct PetInfosView: View {
+struct PetBasicInfoView: View {
+    @StateObject var viewModel = PetCreationViewModel()
     @Environment(\.dismiss) var dismiss
-    @State var showGenderPicker = false
-    @State var showDatePicker = false
-    @State var buttonPressed: Bool = false
+    @Binding var path: NavigationPath
     
-    @State var petName: String = ""
-    @State var birthDate: Date?
-    @State var gender: GenderOptions?
-    @State var selectedSpecie: Species?
-    @State var breed = ""
+    @State private var showGenderPicker: Bool = false
+    @State private var showDatePicker: Bool  = false
+    @State private var buttonPressed: Bool = false
+    
+    @State private var petBirthDate: Date?
+    @State private var petGender: GenderOptions?
+    @State private var petSpecies: SpeciesOptions?
     
     var body: some View {
         ScrollView {
@@ -38,14 +40,14 @@ struct PetInfosView: View {
                         Text("Nome do pet")
                             .appFontDarkerGrotesque(darkness: .SemiBold, size: 19)
                             .padding(.leading)
-                        SinglelineTextField(text: $petName, buttonPressed: $buttonPressed, label: "Insira o nome do seu animalzinho")
+                        SinglelineTextField(text: $viewModel.name, buttonPressed: $buttonPressed, label: "Insira o nome do seu animalzinho")
                     }
                     
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Data de nascimento")
                             .appFontDarkerGrotesque(darkness: .SemiBold, size: 19)
                             .padding(.leading)
-                        SeletorInput(label: birthDate != nil ? formattedDate(birthDate!) : "Selecione qual a data de nascimento", action: {
+                        SeletorInput(label: petBirthDate != nil ? formattedDate(petBirthDate!) : "Selecione qual a data de nascimento", action: {
                             showDatePicker = true
                         })
                     }
@@ -54,29 +56,29 @@ struct PetInfosView: View {
                         Text("Gênero")
                             .appFontDarkerGrotesque(darkness: .SemiBold, size: 19)
                             .padding(.leading)
-                        SeletorInput(label: (gender != nil) ? gender!.displayText : "Qual o gênero do seu pet?", action: {
+                        SeletorInput(label: (petGender != nil) ? petGender!.displayText : "Qual o gênero do seu pet?", action: {
                             showGenderPicker = true
                         })
                         
                     }
                     
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Espécie")
-                            .appFontDarkerGrotesque(darkness: .SemiBold, size: 19)
-                        
-                        HStack {
-                            ForEach(Species.allCases) { species in
-                                SpeciesButton(species: species, selectedSpecies: $selectedSpecie)
-                            }
-                        }
-                    }
-                    .padding(.leading)
+//                    VStack(alignment: .leading, spacing: 8) {
+//                        Text("Espécie")
+//                            .appFontDarkerGrotesque(darkness: .SemiBold, size: 19)
+//                        
+//                        HStack {
+//                            ForEach(Species.allCases) { species in
+//                                SpeciesButton(species: species, selectedSpecies: $petSpecies)
+//                            }
+//                        }
+//                    }
+//                    .padding(.leading)
                     
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Raça")
                             .appFontDarkerGrotesque(darkness: .SemiBold, size: 19)
                             .padding(.leading)
-                        SinglelineTextField(text: $breed, buttonPressed: $buttonPressed, label: "Insira o nome do seu animalzinho")
+                        SinglelineTextField(text: $viewModel.breed, buttonPressed: $buttonPressed, label: "Insira o nome do seu animalzinho")
                     }
                 }
             }
@@ -86,11 +88,11 @@ struct PetInfosView: View {
                         .appFontDarkerGrotesque(darkness: .SemiBold, size: 20)
                     
                     Button(action: {
-                        gender = .female
+                        petGender = .female
                         showGenderPicker = false
                     }, label: {
                         Text("Fêmea")
-                            .foregroundStyle(gender == .female ? .white : .black)
+                            .foregroundStyle(petGender == .female ? .white : .black)
                             .padding(.vertical, 10)
                             .padding(.horizontal, 130)
                             .background {
@@ -101,11 +103,11 @@ struct PetInfosView: View {
                     })
                     
                     Button(action: {
-                        gender = .male
+                        petGender = .male
                         showGenderPicker = false
                     }, label: {
                         Text("Macho")
-                            .foregroundStyle(gender == .male ? .white : .black)
+                            .foregroundStyle(petGender == .male ? .white : .black)
                             .padding(.vertical, 10)
                             .padding(.horizontal, 130)
                             .background {
@@ -128,8 +130,8 @@ struct PetInfosView: View {
                     DatePicker(
                         "Selecione a data de nascimento",
                         selection: Binding(
-                            get: { birthDate ?? Date() },
-                            set: { birthDate = $0 }
+                            get: { petBirthDate ?? Date() },
+                            set: { petBirthDate = $0 }
                         ),
                         displayedComponents: [.date]
                     )
@@ -164,7 +166,10 @@ struct PetInfosView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                   // nav path aqui
+                    viewModel.birthDate = petBirthDate ?? Date()
+                    viewModel.gender = petGender ?? .female
+                    viewModel.specie = petSpecies ?? .dog
+                    path.append(PetFlowDestination.petProfile)
                 }) {
                    Text("Avançar")
                         .appFontDarkerGrotesque(darkness: .SemiBold, size: 17)
@@ -182,5 +187,7 @@ struct PetInfosView: View {
 }
 
 #Preview {
-    PetInfosView()
+    PetBasicInfoView(
+        path: .constant(NavigationPath())
+    )
 }

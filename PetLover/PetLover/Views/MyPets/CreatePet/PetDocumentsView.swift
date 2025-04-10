@@ -8,25 +8,16 @@
 import SwiftUI
 
 struct PetDocumentsView: View {
+    @Binding var path: NavigationPath
     var body: some View {
-        NavigationStack {
             VStack {
                 Text("Informacoes")
-                NavigationLink(destination: PetInfosView(), label: {
-                    Text("Ir")
-                })
-                NavigationLink(destination: PetMedicalView(), label: {
-                    Text("medic")
-                })
-                NavigationLink(destination: PetProfileView(), label: {
-                    Text("foto")
-                })
-                
-            }
         }
     }
 }
 
 #Preview {
-    PetDocumentsView()
+    PetDocumentsView(
+        path: .constant(NavigationPath())
+    )
 }

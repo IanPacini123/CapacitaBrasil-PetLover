@@ -10,8 +10,10 @@ import PhotosUI
 
 struct PetProfileView: View {
     @Environment(\.dismiss) var dismiss
-    @State var selectedItem: PhotosPickerItem? = nil
-    @State var selectedImageData: Data? = nil
+    @Binding var path: NavigationPath
+    
+    @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var selectedImageData: Data? = nil
 
     var body: some View {
         VStack(spacing: 24) {
@@ -118,7 +120,7 @@ struct PetProfileView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                   // nav path aqui
+               path.append(PetFlowDestination.petMedicalConditions)
                 }) {
                    Text("Avançar")
                         .appFontDarkerGrotesque(darkness: .SemiBold, size: 17)
@@ -130,5 +132,7 @@ struct PetProfileView: View {
 }
 
 #Preview {
-    PetProfileView()
+    PetProfileView(
+        path: .constant(NavigationPath())
+    )
 }
