@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct SpeciesButton: View {
-    var species: Species
-    @Binding var selectedSpecies: Species?
+    var species: SpeciesOptions
+    @Binding var selectedSpecies: SpeciesOptions?
     
     var body: some View {
         Button {
@@ -23,7 +23,7 @@ struct SpeciesButton: View {
                     .padding(.horizontal, 4)
                     .padding(.bottom, 2)
                 
-                Text(species.rawValue)
+                Text(species.displayName)
                     .appFontDarkerGrotesque(darkness: .Bold, size: 14)
                     .foregroundStyle(.black)
                 
@@ -43,30 +43,8 @@ struct SpeciesButton: View {
     }
 }
 
-enum Species: String, CaseIterable, Identifiable {
-    case Cachorro
-    case Gato
-    case Passaro
-    case Outro
-    
-    var id: String { self.rawValue }
-    
-    func image() -> Image {
-        switch self {
-        case .Cachorro:
-            return Image("IconDog")
-        case .Gato:
-            return Image("IconCat")
-        case .Passaro:
-            return Image("IconBird")
-        case .Outro:
-            return Image("IconPawSpecies")
-        }
-    }
-}
-
 #Preview {
-    @Previewable @State var selectedSpecies: Species? = .Outro
+    @Previewable @State var selectedSpecies: SpeciesOptions? = .dog
     
-    SpeciesButton(species: .Cachorro, selectedSpecies: $selectedSpecies)
+    SpeciesButton(species: .dog, selectedSpecies: $selectedSpecies)
 }

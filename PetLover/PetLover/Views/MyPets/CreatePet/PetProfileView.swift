@@ -9,11 +9,11 @@ import SwiftUI
 import PhotosUI
 
 struct PetProfileView: View {
+    @ObservedObject var petCreationViewModel = PetCreationViewModel()
     @Environment(\.dismiss) var dismiss
     @Binding var path: NavigationPath
     
     @State private var selectedItem: PhotosPickerItem? = nil
-    @State private var selectedImageData: Data? = nil
 
     var body: some View {
         VStack(spacing: 24) {
@@ -28,7 +28,7 @@ struct PetProfileView: View {
                     .padding(.horizontal, 70)
             }
 
-            if let imageData = selectedImageData,
+            if let imageData = petCreationViewModel.photo,
                let uiImage = UIImage(data: imageData) {
                 Image(uiImage: uiImage)
                     .resizable()
@@ -74,13 +74,13 @@ struct PetProfileView: View {
                 .onChange(of: selectedItem) { newItem in
                     Task {
                         if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                            selectedImageData = data
+                            petCreationViewModel.photo = data
                         }
                     }
                 }
                 
                 Button(action: {
-                    //pular
+                    path.append(PetFlowDestination.petMedicalConditions)
                 }, label: {
                     Text("Pular")
                         .appFontDarkerGrotesque(darkness: .Bold, size: 22)

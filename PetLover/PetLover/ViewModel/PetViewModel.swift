@@ -39,6 +39,13 @@ class PetViewModel: ObservableObject {
         
         context.insert(newPet)
         
+        do {
+                try context.save()
+                print("Pet salvo com sucesso!")
+            } catch {
+                print("Erro ao salvar o pet: \(error.localizedDescription)")
+            }
+        
         fetchPets(context: context)
     }
     

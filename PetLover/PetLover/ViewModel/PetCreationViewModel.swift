@@ -20,6 +20,8 @@ class PetCreationViewModel: ObservableObject {
     @Published var gender: GenderOptions = .female
     @Published var reminders: [Reminder] = []
     
+    // colocar nil
+    
     func clear() {
         name = ""
         birthDate = Date()

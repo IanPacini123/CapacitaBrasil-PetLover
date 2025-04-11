@@ -10,7 +10,7 @@ import Foundation
 import SwiftData
 
 struct PetBasicInfoView: View {
-    @StateObject var viewModel = PetCreationViewModel()
+    @StateObject var petCreationViewModel = PetCreationViewModel()
     @Environment(\.dismiss) var dismiss
     @Binding var path: NavigationPath
     
@@ -18,6 +18,7 @@ struct PetBasicInfoView: View {
     @State private var showDatePicker: Bool  = false
     @State private var buttonPressed: Bool = false
     
+    // Essas váriaveis vão ser usadas pra guardar temporariamente o valor antes de passar pra viewmodel, assim os campos não inicializam com um valor padrão
     @State private var petBirthDate: Date?
     @State private var petGender: GenderOptions?
     @State private var petSpecies: SpeciesOptions?
@@ -40,7 +41,7 @@ struct PetBasicInfoView: View {
                         Text("Nome do pet")
                             .appFontDarkerGrotesque(darkness: .SemiBold, size: 19)
                             .padding(.leading)
-                        SinglelineTextField(text: $viewModel.name, buttonPressed: $buttonPressed, label: "Insira o nome do seu animalzinho")
+                        SinglelineTextField(text: $petCreationViewModel.name, buttonPressed: $buttonPressed, label: "Insira o nome do seu animalzinho")
                     }
                     
                     VStack(alignment: .leading, spacing: 8) {
@@ -62,23 +63,23 @@ struct PetBasicInfoView: View {
                         
                     }
                     
-//                    VStack(alignment: .leading, spacing: 8) {
-//                        Text("Espécie")
-//                            .appFontDarkerGrotesque(darkness: .SemiBold, size: 19)
-//                        
-//                        HStack {
-//                            ForEach(Species.allCases) { species in
-//                                SpeciesButton(species: species, selectedSpecies: $petSpecies)
-//                            }
-//                        }
-//                    }
-//                    .padding(.leading)
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Espécie")
+                            .appFontDarkerGrotesque(darkness: .SemiBold, size: 19)
+                        
+                        HStack {
+                            ForEach(SpeciesOptions.allCases) { species in
+                                SpeciesButton(species: species, selectedSpecies: $petSpecies)
+                            }
+                        }
+                    }
+                    .padding(.leading)
                     
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Raça")
                             .appFontDarkerGrotesque(darkness: .SemiBold, size: 19)
                             .padding(.leading)
-                        SinglelineTextField(text: $viewModel.breed, buttonPressed: $buttonPressed, label: "Insira o nome do seu animalzinho")
+                        SinglelineTextField(text: $petCreationViewModel.breed, buttonPressed: $buttonPressed, label: "Insira o nome do seu animalzinho")
                     }
                 }
             }
@@ -166,9 +167,9 @@ struct PetBasicInfoView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    viewModel.birthDate = petBirthDate ?? Date()
-                    viewModel.gender = petGender ?? .female
-                    viewModel.specie = petSpecies ?? .dog
+                    petCreationViewModel.birthDate = petBirthDate ?? Date()
+                    petCreationViewModel.gender = petGender ?? .female
+                    petCreationViewModel.specie = petSpecies ?? .dog
                     path.append(PetFlowDestination.petProfile)
                 }) {
                    Text("Avançar")
