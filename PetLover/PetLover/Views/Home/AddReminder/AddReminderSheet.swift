@@ -47,11 +47,13 @@ struct AddReminderSheet: View {
             Form {
                 Section {
                     PetSelectorList(pets: [.init(name: "Passaro Teste", birthDate: .now, specie: .bird, breed: "", photo: nil, castrationStatus: .yes, weight: 10, infos: "", gender: .male)],selectedPet: $selectedpet)
-                    .listRowBackground(Color.clear)
                 } header: {
                     Text("Selecione o seu pet")
+                        .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
+                        .foregroundStyle(.black)
                 }
             }
+            .scrollContentBackground(.hidden)
         }
     }
 }
