@@ -9,45 +9,43 @@ import SwiftData
 
 class PetCreationViewModel: ObservableObject {
     @Published var name: String = ""
-    @Published var birthDate: Date = Date()
-    @Published var specie: SpeciesOptions = .dog
+    @Published var birthDate: Date?
+    @Published var specie: SpeciesOptions?
     @Published var breed: String = ""
     @Published var photo: Data?
-    @Published var castrationStatus: CastrationStatus = .no
+    @Published var castrationStatus: CastrationStatus?
     @Published var weight: Double = 0.0
     @Published var infos: String = ""
     @Published var petDocuments: [PetDocument] = []
-    @Published var gender: GenderOptions = .female
+    @Published var gender: GenderOptions?
     @Published var reminders: [Reminder] = []
-    
-    // colocar nil
     
     func clear() {
         name = ""
-        birthDate = Date()
+        birthDate = nil
         specie = .dog
         breed = ""
         photo = nil
-        castrationStatus = .no
+        castrationStatus = nil
         weight = 0.0
         infos = ""
         petDocuments = []
-        gender = .male
+        gender = nil
     }
     
     func savePet(context: ModelContext, petViewModel: PetViewModel) {
         petViewModel.createPet(
             context: context,
             name: name,
-            birthDate: birthDate,
-            specie: specie,
+            birthDate: birthDate ?? Date(),
+            specie: specie ?? .dog,
             breed: breed,
             photo: photo,
-            castrationStatus: castrationStatus,
+            castrationStatus: castrationStatus ?? .unknown,
             weight: weight,
             infos: infos,
             petDocuments: petDocuments,
-            gender: gender
+            gender: gender ?? .male
         )
         
         clear()

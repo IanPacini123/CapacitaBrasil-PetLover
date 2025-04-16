@@ -10,9 +10,10 @@ import SwiftData
 
 @main
 struct PetLoverApp: App {
+    @StateObject var petCreationViewModel = PetCreationViewModel()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            FluxoAdicionarPet(petCreationViewModel: petCreationViewModel)
         }
         .modelContainer(for: [Pet.self, PetDocument.self])
     }

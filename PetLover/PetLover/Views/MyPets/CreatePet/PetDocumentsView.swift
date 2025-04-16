@@ -8,100 +8,114 @@
 import SwiftUI
 import SwiftData
 import UniformTypeIdentifiers
+
 struct PetDocumentsView: View {
-    @ObservedObject var petCreationViewModel = PetCreationViewModel()
+    @ObservedObject var petCreationViewModel: PetCreationViewModel
     @ObservedObject var petViewModel = PetViewModel()
+    @Binding var path: NavigationPath
+
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) private var context
-    @Binding var path: NavigationPath
-    
     @State private var buttonPressed: Bool = false
     @State private var isImporterPresented = false
-    
+
     @State private var tempTitle: String = ""
     @State private var tempURL: URL?
 
+    var showBottomButton: Bool {
+        !(petCreationViewModel.petDocuments.count >= 2 ||
+          (petCreationViewModel.petDocuments.count >= 1 && tempURL != nil))
+    }
+
     var body: some View {
-        VStack(spacing: 16) {
-            VStack(spacing: 8) {
-                Text("Documentos")
-                    .appFontDarkerGrotesque(darkness: .SemiBold, size: 24)
-                Text("Falta pouco! Adicione aqui informações a respeito do peso, alergias, e tudo o que achar relevante.")
-                    .appFontDarkerGrotesque(darkness: .Regular, size: 17)
-                    .multilineTextAlignment(.center)
-                Text("Insira o título e selecione o documento")
-                    .appFontDarkerGrotesque(darkness: .Regular, size: 17)
-                    .padding(.top)
-                PageProgressBar(totalPages: 5, currentPage: 1)
-                    .padding(.horizontal, 70)
-            }
+        ZStack(alignment: .bottom) {
+            ScrollView {
+                VStack(spacing: 16) {
+                    VStack(spacing: 8) {
+                        Text("Documentos")
+                            .appFontDarkerGrotesque(darkness: .SemiBold, size: 24)
+                        Text("Falta pouco! Adicione aqui informações a respeito do peso, alergias, e tudo o que achar relevante.")
+                            .appFontDarkerGrotesque(darkness: .Regular, size: 17)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 26)
+                        Text("Clique no card para selecionar o arquivo")
+                            .appFontDarkerGrotesque(darkness: .Regular, size: 17)
+                            .padding(.top)
+                        PageProgressBar(totalPages: 4, currentPage: 4)
+                            .padding(.horizontal, 70)
+                            .padding(.top, 8)
+                    }
 
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Título do documento")
-                    .appFontDarkerGrotesque(darkness: .SemiBold, size: 19)
-                    .padding(.leading)
-                SinglelineTextField(text: $tempTitle, buttonPressed: $buttonPressed, label: "Ex: Alergias, Carteira de vacinação...")
-            }
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Título")
+                            .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
+                            .padding(.leading)
+                        SinglelineTextField(text: $tempTitle, buttonPressed: $buttonPressed, label: "Qual o título desse documento?")
+                    }
 
-            Button(action: {
-                isImporterPresented = true
-            }, label: {
-                VStack {
-                    Text(tempURL == nil ? "Selecionar arquivo" : "Arquivo selecionado ✅")
-                        .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
-                        .foregroundStyle(.black)
-                        .underline(true, color: .black)
-                    Image("IconClip")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 58, height: 58)
-                        .foregroundStyle(Color.AppColors.secondary60BlueishGray)
-                        .padding(.top, 20)
+                    if petCreationViewModel.petDocuments.isEmpty {
+                        SelectFileButton(tempURL: tempURL) {
+                            isImporterPresented = true
+                        }
+                    } else {
+                        VStack {
+                            TempDocumentPreview(tempURL: tempURL)
+                            ForEach(petCreationViewModel.petDocuments, id: \.id) { document in
+                                DocumentCardView(title: document.title, fileName: document.fileURL.lastPathComponent)
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+
+                    if petCreationViewModel.petDocuments.isEmpty {
+                        SaveButton(tempTitle: tempTitle, tempURL: tempURL) {
+                            let newDoc = PetDocument(title: tempTitle, fileURL: tempURL!)
+                            petCreationViewModel.petDocuments.append(newDoc)
+                            tempTitle = ""
+                            tempURL = nil
+                        }
+                    } else {
+                        SaveOrSelectButton(
+                            tempTitle: tempTitle,
+                            tempURL: tempURL,
+                            canShow: showBottomButton,
+                            saveAction: {
+                                let newDoc = PetDocument(title: tempTitle, fileURL: tempURL!)
+                                petCreationViewModel.petDocuments.append(newDoc)
+                                tempTitle = ""
+                                tempURL = nil
+                            },
+                            selectAction: {
+                                isImporterPresented = true
+                            }
+                        )
+                    }
+
+                    Spacer()
                 }
-                .frame(maxWidth: .infinity, minHeight: 166)
-                .padding(.vertical, 16)
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(lineWidth: 1)
-                        .foregroundStyle(.black)
-                )
-            })
-            .padding(.horizontal)
+                .padding(.top, 40)
+            }
 
-            if tempURL != nil && !tempTitle.isEmpty {
-                Button("Adicionar documento") {
+            SaveOrSelectButton(
+                tempTitle: tempTitle,
+                tempURL: tempURL,
+                canShow: !showBottomButton,
+                saveAction: {
                     let newDoc = PetDocument(title: tempTitle, fileURL: tempURL!)
                     petCreationViewModel.petDocuments.append(newDoc)
                     tempTitle = ""
                     tempURL = nil
+                },
+                selectAction: {
+                    isImporterPresented = true
                 }
-//                .appFontDarkerGrotesque(darkness: .Regular, size: 17)
-                .padding()
-                .background(Color.black)
-                .foregroundColor(.white)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .padding(.horizontal)
-            }
-
-            if !petCreationViewModel.petDocuments.isEmpty {
-                Text("Documentos adicionados")
-                    .appFontDarkerGrotesque(darkness: .SemiBold, size: 18)
-                    .padding(.top)
-
-                List {
-                    ForEach(petCreationViewModel.petDocuments, id: \.id) { document in
-                        VStack(alignment: .leading) {
-                            Text(document.title)
-                                .font(.headline)
-                            Text(document.fileURL.lastPathComponent)
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
-                        }
-                    }
-                }
-                .frame(height: 200)
-            }
+            )
+            .padding(.bottom)
         }
+        .background(
+            Color.AppColors.nearNeutralLightLightGray
+                .ignoresSafeArea()
+        )
         .fileImporter(
             isPresented: $isImporterPresented,
             allowedContentTypes: [.pdf, .image, .plainText, .data],
@@ -114,7 +128,6 @@ struct PetDocumentsView: View {
                 print("Erro na importação: \(error.localizedDescription)")
             }
         }
-        .padding()
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -134,17 +147,17 @@ struct PetDocumentsView: View {
                 Button(action: {
                     petViewModel.createPet(context: context,
                                            name: petCreationViewModel.name,
-                                           birthDate: petCreationViewModel.birthDate,
-                                           specie: petCreationViewModel.specie,
+                                           birthDate: petCreationViewModel.birthDate ?? Date(),
+                                           specie: petCreationViewModel.specie ?? .dog,
                                            breed: petCreationViewModel.breed,
                                            photo: petCreationViewModel.photo,
-                                           castrationStatus: petCreationViewModel.castrationStatus,
+                                           castrationStatus: petCreationViewModel.castrationStatus ?? .unknown,
                                            weight: petCreationViewModel.weight,
                                            infos: petCreationViewModel.infos,
                                            petDocuments: petCreationViewModel.petDocuments,
-                                           gender: petCreationViewModel.gender)
+                                           gender: petCreationViewModel.gender ?? .male)
                     petCreationViewModel.clear()
-                    path.append(PetFlowDestination.home)
+                    path = NavigationPath()
                 }) {
                     Text("Finalizar")
                         .appFontDarkerGrotesque(darkness: .SemiBold, size: 17)
@@ -155,7 +168,132 @@ struct PetDocumentsView: View {
     }
 }
 
+private struct SelectFileButton: View {
+    var tempURL: URL?
+    var action: () -> Void
 
-#Preview {
-    PetDocumentsView(path: .constant(NavigationPath()))
+    var body: some View {
+        Button(action: action) {
+            VStack {
+                Text((tempURL == nil ? "Selecionar arquivo" : tempURL?.lastPathComponent)!)
+                    .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
+                    .foregroundStyle(.black)
+                    .underline(true, color: .black)
+                Image("IconClip")
+                    .resizable()
+                    .frame(width: 58, height: 58)
+                    .foregroundStyle(Color.AppColors.secondary60BlueishGray)
+                    .padding(.top, 20)
+            }
+            .frame(maxWidth: .infinity, minHeight: 166)
+            .padding(.vertical, 16)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(lineWidth: 1)
+                    .foregroundStyle(.black)
+            )
+        }
+        .padding(.horizontal)
+    }
+}
+
+private struct TempDocumentPreview: View {
+    var tempURL: URL?
+
+    var body: some View {
+        if let tempURL = tempURL {
+            VStack {
+                Text(tempURL.lastPathComponent)
+                    .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
+                    .foregroundStyle(.black)
+                    .underline(true, color: .black)
+                Image("IconClip")
+                    .resizable()
+                    .frame(width: 58, height: 58)
+                    .foregroundStyle(Color.AppColors.secondary60BlueishGray)
+                    .padding(.top, 20)
+            }
+            .frame(maxWidth: .infinity, minHeight: 166)
+            .padding(.vertical, 16)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(lineWidth: 1)
+                    .foregroundStyle(.black)
+            )
+        }
+    }
+}
+
+private struct DocumentCardView: View {
+    var title: String
+    var fileName: String
+
+    var body: some View {
+        VStack(alignment: .center) {
+            Text(title)
+                .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
+                .foregroundStyle(.black)
+                .underline(true, color: .black)
+            VStack {
+                Image("IconClip")
+                    .resizable()
+                    .frame(width: 58, height: 58)
+                    .foregroundStyle(Color.AppColors.secondary60BlueishGray)
+                    .padding(.top, 20)
+                Text(fileName)
+                    .appFontDarkerGrotesque(darkness: .Regular, size: 13)
+                    .foregroundStyle(.black)
+                    .padding(.bottom, 10)
+            }
+            .frame(maxWidth: .infinity, minHeight: 100)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .foregroundStyle(Color.AppColors.documentLightGray)
+            )
+            .padding(.horizontal, 45)
+        }
+        .frame(maxWidth: .infinity, minHeight: 166)
+        .padding(.vertical, 16)
+        .background(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(lineWidth: 1)
+                .foregroundStyle(.black)
+        )
+    }
+}
+
+private struct SaveOrSelectButton: View {
+    var tempTitle: String
+    var tempURL: URL?
+    var canShow: Bool
+    var saveAction: () -> Void
+    var selectAction: () -> Void
+
+    var body: some View {
+        if canShow {
+            if tempURL == nil {
+                LargeButton(label: "Selecionar novo arquivo", type: .primary, action: selectAction)
+                    .padding(.horizontal)
+                    .frame(height: 44)
+            } else {
+                LargeButton(label: "Salvar", type: .primary, action: saveAction)
+                    .disabled(tempTitle.isEmpty || tempURL == nil)
+                    .padding(.horizontal)
+                    .frame(height: 44)
+            }
+        }
+    }
+}
+
+private struct SaveButton: View {
+    var tempTitle: String
+    var tempURL: URL?
+    var action: () -> Void
+
+    var body: some View {
+        LargeButton(label: "Salvar", type: .primary, action: action)
+            .disabled(tempTitle.isEmpty || tempURL == nil)
+            .padding(.horizontal)
+            .frame(height: 44)
+    }
 }

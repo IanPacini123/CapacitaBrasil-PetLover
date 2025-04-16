@@ -8,8 +8,10 @@
 import SwiftUI
 import PhotosUI
 
+// substituir aqui o botau
+
 struct PetProfileView: View {
-    @ObservedObject var petCreationViewModel = PetCreationViewModel()
+    @ObservedObject var petCreationViewModel: PetCreationViewModel
     @Environment(\.dismiss) var dismiss
     @Binding var path: NavigationPath
     
@@ -24,8 +26,9 @@ struct PetProfileView: View {
                 Text("Escolha uma foto (.png, .jpeg) para o perfil do seu pet.")
                     .appFontDarkerGrotesque(darkness: .Regular, size: 17)
                 
-                PageProgressBar(totalPages: 5, currentPage: 2)
+                PageProgressBar(totalPages: 4, currentPage: 2)
                     .padding(.horizontal, 70)
+                    .padding(.top, 8)
             }
 
             if let imageData = petCreationViewModel.photo,
@@ -62,7 +65,7 @@ struct PetProfileView: View {
                     matching: .images,
                     photoLibrary: .shared()
                 ) {
-                    Text("Adicionar foto")
+                    Text(selectedItem != nil ? "Alterar foto" : "Adicionar foto")
                         .appFontDarkerGrotesque(darkness: .Bold, size: 22)
                         .frame(maxWidth: .infinity)
                         .frame(height: 44)
@@ -79,27 +82,16 @@ struct PetProfileView: View {
                     }
                 }
                 
-                Button(action: {
+                LargeButton(label: "Pular", type: .secondary, action: {
+                    petCreationViewModel.photo = nil
                     path.append(PetFlowDestination.petMedicalConditions)
-                }, label: {
-                    Text("Pular")
-                        .appFontDarkerGrotesque(darkness: .Bold, size: 22)
-                        .foregroundStyle(Color.AppColors.secondary60BlueishGray)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 44)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(lineWidth: 1.2)
-                                .foregroundStyle(Color.AppColors.secondary60BlueishGray)
-                                .background(.clear)
-                        )
-                        .padding(.horizontal)
                 })
+                .padding(.horizontal)
+                .frame(height: 44)
             }
-            
             Spacer()
         }
-        .padding(.top, 60)
+        .padding(.top, 40)
         .background(
             Color.AppColors.nearNeutralLightLightGray.ignoresSafeArea()
         )
@@ -129,10 +121,4 @@ struct PetProfileView: View {
             }
         }
     }
-}
-
-#Preview {
-    PetProfileView(
-        path: .constant(NavigationPath())
-    )
 }
