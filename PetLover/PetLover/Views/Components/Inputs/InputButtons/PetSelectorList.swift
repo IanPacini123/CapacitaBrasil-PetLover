@@ -37,7 +37,6 @@ struct PetSelectorList: View {
                     }
                 }
             }
-            .padding(.vertical)
         }
     }
 }

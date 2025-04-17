@@ -34,8 +34,6 @@ struct SinglelineTextField: View {
                     .stroke(lineWidth: 1)
                     .foregroundColor(buttonPressed && text.isEmpty ? .AppColors.helperErrorRed : .black)
             )
-            .padding(.horizontal)
-            
             if buttonPressed && text.isEmpty {
                 Text("Campo obrigatório. Preencha antes de continuar.")
                     .font(.custom("Darker Grotesque", size: 14).weight(.bold))

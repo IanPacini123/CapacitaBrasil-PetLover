@@ -15,7 +15,7 @@ struct AddReminderSheet: View {
     var pets: [Pet] = []
     
     var body: some View {
-        VStack {
+        VStack{
             HStack {
                 Button {
                     print("Voltar")
@@ -41,20 +41,45 @@ struct AddReminderSheet: View {
                     .appFontDarkerGrotesque(darkness: .Black, size: 32)
                     .foregroundStyle(Color.AppColors.secondary60BlueishGray)
             }
-            
-            Spacer()
-            
             Form {
                 Section {
-                    PetSelectorList(pets: [.init(name: "Passaro Teste", birthDate: .now, specie: .bird, breed: "", photo: nil, castrationStatus: .yes, weight: 10, infos: "", gender: .male)],selectedPet: $selectedpet)
+                    PetSelectorList(pets: [.init(name: "Passsaro Testeeeeeeeeeeeeee", birthDate: .now, specie: .bird, breed: "", photo: nil, castrationStatus: .yes, weight: 10, infos: "", gender: .male)],selectedPet: $selectedpet)
                 } header: {
                     Text("Selecione o seu pet")
                         .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
                         .foregroundStyle(.black)
                 }
+                
+                Section {
+                    SinglelineTextField(text: .constant(""), buttonPressed: .constant(false), label: "")
+                } header: {
+                    Text("Título do Lembrete")
+                        .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
+                        .foregroundStyle(.black)
+                }
+                
+                Section {
+                    ScrollView(.horizontal) {
+                        HStack {
+                            InputButton(label: "Eventos", isSelected: .constant(false))
+                            InputButton(label: "Cuidados diários", isSelected: .constant(false))
+                            InputButton(label: "Saúde", isSelected: .constant(false))
+                        }
+                    }
+                        .font(.appFontDarkerGrotesque(darkness: .Bold, size: 17))
+                } header: {
+                    Text("Categoria")
+                        .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
+                        .foregroundStyle(.black)
+                }
+
+
             }
+            .formStyle(.columns)
             .scrollContentBackground(.hidden)
         }
+        .padding()
+        Spacer()
     }
 }
 
