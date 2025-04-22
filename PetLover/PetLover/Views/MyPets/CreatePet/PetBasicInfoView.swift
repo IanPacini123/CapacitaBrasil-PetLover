@@ -21,15 +21,7 @@ struct PetBasicInfoView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                VStack(spacing: 8) {
-                    Text("Informações básicas")
-                        .appFontDarkerGrotesque(darkness: .SemiBold, size: 24)
-                    Text("Insira as informações primárias do seu pet!")
-                        .appFontDarkerGrotesque(darkness: .Regular, size: 17)
-                    PageProgressBar(totalPages: 4, currentPage: 1)
-                        .padding(.horizontal, 70)
-                        .padding(.top, 8)
-                }
+                PetFormHeader(title: "Informações básicas", text: "Insira as informações primárias do seu pet!", totalPages: 4, currentPage: 1)
                 
                 VStack(alignment: .leading, spacing: 24) {
                     VStack(alignment: .leading, spacing: 8) {
@@ -266,4 +258,3 @@ struct FluxoAdicionarPet: View {
         }
     }
 }
-
