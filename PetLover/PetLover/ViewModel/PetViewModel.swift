@@ -99,7 +99,7 @@ class PetViewModel: ObservableObject {
     }
 }
 
-struct PetTestesView: View {
+private struct PetTestesView: View {
     @StateObject private var viewModel = PetViewModel()
     @Environment(\.modelContext) private var context
     
