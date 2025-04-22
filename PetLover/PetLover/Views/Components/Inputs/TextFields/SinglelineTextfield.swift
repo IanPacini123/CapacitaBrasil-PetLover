@@ -18,13 +18,13 @@ struct SinglelineTextField: View {
             ZStack(alignment: .leading) {
                 if text.isEmpty {
                     Text(label)
-                        .font(.custom("Darker Grotesque", size: 14).weight(.bold))
+                        .font(.custom("Darker Grotesque", size: 14).weight(.medium))
                         .foregroundColor(Color.AppColors.secondary70DarkBlue)
                         .padding(.leading, 8)
                 }
                 
                 TextField("", text: $text)
-                    .font(.custom("Darker Grotesque", size: 14).weight(.bold))
+                    .font(.custom("Darker Grotesque", size: 14).weight(.medium))
                     .foregroundColor(Color.AppColors.secondary70DarkBlue)
                     .padding(.vertical, 14)
                     .padding(.leading, 10)
