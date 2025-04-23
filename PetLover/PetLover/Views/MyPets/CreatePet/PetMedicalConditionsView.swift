@@ -60,30 +60,20 @@ struct PetMedicalConditionsView: View {
                         }
                     }
                 }
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Peso")
-                        .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
-                        .padding(.leading)
-                    
-                    SeletorInput(
-                        label: petCreationViewModel.weight != 0.0 ?
-                        "\(String(format: "%.1f", petCreationViewModel.weight)) kg" :
-                            "Qual o peso do seu animalzinho?",
-                        action: {
-                            isWeightPickerPresented = true
-                        }
-                    )
-                }
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Informações adicionais")
-                        .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
-                        .padding(.leading)
-                    MultilineTextField(
-                        text: $petCreationViewModel.infos,
-                        buttonPressed: $buttonPressed,
-                        placeholder: "Fique à vontade para adicionar informações sobre seu pet, como alergias, remédios em uso, etc..."
-                    )
-                }
+                
+                SeletorInput(vazio: false, buttonPressed: $buttonPressed, isOptional: true, label: petCreationViewModel.weight != 0.0 ?
+                             "\(String(format: "%.1f", petCreationViewModel.weight)) kg" :
+                                "Qual o peso do seu animalzinho?", action: {
+                    isWeightPickerPresented = true
+                }, fieldTitle: "Peso")
+                
+                
+                MultilineTextField(
+                    text: $petCreationViewModel.infos,
+                    buttonPressed: $buttonPressed, fieldTitle: "Informações adicionais",
+                    placeholder: "Fique à vontade para adicionar informações sobre seu pet, como alergias, remédios em uso, etc..."
+                )
+                
                 Spacer()
             }
             .padding(.top, 40)

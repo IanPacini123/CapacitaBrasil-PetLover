@@ -45,13 +45,7 @@ struct PetDocumentsView: View {
                             .padding(.horizontal, 70)
                             .padding(.top, 8)
                     }
-
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Título")
-                            .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
-                            .padding(.leading)
-                        SinglelineTextField(text: $tempTitle, buttonPressed: $buttonPressed, label: "Qual o título desse documento?")
-                    }
+                        SinglelineTextField(text: $tempTitle, buttonPressed: $buttonPressed, isOptional: true, label: "Qual o título desse documento?", fieldTitle: "Título")
 
                     if petCreationViewModel.petDocuments.isEmpty {
                         SelectFileButton(tempURL: tempURL) {

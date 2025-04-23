@@ -32,35 +32,25 @@ struct PetBasicInfoView: View {
                 }
                 
                 VStack(alignment: .leading, spacing: 24) {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Nome do pet")
-                            .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
-                            .padding(.leading)
-                        SinglelineTextField(text: $petCreationViewModel.name, buttonPressed: $buttonPressed, label: "Insira o nome do seu animalzinho")
-                    }
+                    SinglelineTextField(text: $petCreationViewModel.name, buttonPressed: $buttonPressed, isOptional: false, label: "Insira o nome do seu animalzinho", fieldTitle: "Nome do pet")
                     
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Data de nascimento")
-                            .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
-                            .padding(.leading)
-                        SeletorInput(label: petCreationViewModel.birthDate != nil ? formattedDate(petCreationViewModel.birthDate!) : "Selecione qual a data de nascimento", action: {
+                        SeletorInput(vazio: petCreationViewModel.birthDate != nil ? false : true, buttonPressed: $buttonPressed, isOptional: false, label: petCreationViewModel.birthDate != nil ? formattedDate(petCreationViewModel.birthDate!) : "Selecione qual a data de nascimento", action: {
                             showDatePicker = true
-                        })
-                    }
+                        }, fieldTitle: "Data de nascimento")
                     
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Gênero")
-                            .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
-                            .padding(.leading)
-                        SeletorInput(label: (petCreationViewModel.gender != nil) ? petCreationViewModel.gender!.displayText : "Qual o gênero do seu pet?", action: {
+                        SeletorInput(vazio: false, buttonPressed: $buttonPressed, isOptional: true, label: (petCreationViewModel.gender != nil) ? petCreationViewModel.gender!.displayText : "Qual o gênero do seu pet?", action: {
                             showGenderPicker = true
-                        })
+                        }, fieldTitle: "Genero")
                         
-                    }
-                    
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Espécie")
                             .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
+                        
+                        if buttonPressed && petCreationViewModel.specie == nil {
+                            Text("Campo obrigatório. Selecione antes de continuar.")
+                                .font(.custom("Darker Grotesque", size: 14).weight(.medium))
+                                .foregroundColor(Color.AppColors.helperErrorRed)
+                        }
                         
                         HStack {
                             ForEach(SpeciesOptions.allCases) { species in
@@ -70,12 +60,7 @@ struct PetBasicInfoView: View {
                     }
                     .padding(.leading)
                     
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Raça")
-                            .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
-                            .padding(.leading)
-                        SinglelineTextField(text: $petCreationViewModel.breed, buttonPressed: $buttonPressed, label: "Qual a raça do seu pet?")
-                    }
+                    SinglelineTextField(text: $petCreationViewModel.breed, buttonPressed: $buttonPressed, isOptional: true, label: "Qual a raça do seu pet?", fieldTitle: "Raça")
                 }
             }
             .padding(.top, 40)
@@ -173,7 +158,12 @@ struct PetBasicInfoView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    path.append(PetFlowDestination.petProfile)
+                    if petCreationViewModel.birthDate == nil || petCreationViewModel.specie == nil || petCreationViewModel.name.isEmpty {
+                        buttonPressed = true
+                    } else {
+                        buttonPressed = false
+                        path.append(PetFlowDestination.petProfile)
+                    }
                 }) {
                    Text("Avançar")
                         .appFontDarkerGrotesque(darkness: .SemiBold, size: 17)
@@ -267,3 +257,8 @@ struct FluxoAdicionarPet: View {
     }
 }
 
+#Preview {
+    FluxoAdicionarPet(
+        petCreationViewModel: PetCreationViewModel()
+    )
+}
