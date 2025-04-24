@@ -20,17 +20,8 @@ struct PetMedicalConditionsView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                VStack(spacing: 8) {
-                    Text("Condições Médicas")
-                        .appFontDarkerGrotesque(darkness: .SemiBold, size: 24)
-                    Text("Falta pouco! Adicione aqui informações a respeito do peso, alergias, e tudo o que achar relevante.")
-                        .appFontDarkerGrotesque(darkness: .Regular, size: 17)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 30)
-                    PageProgressBar(totalPages: 4, currentPage: 3)
-                        .padding(.horizontal, 70)
-                        .padding(.top, 8)
-                }
+                PetFormHeader(title: "Condições Médicas", text: "Falta pouco! Adicione aqui informações a respeito do peso, alergias, e tudo o que achar relevante.", totalPages: 4, currentPage: 3)
+              
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Castração")
                         .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)

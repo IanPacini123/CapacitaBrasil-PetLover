@@ -19,17 +19,7 @@ struct PetProfileView: View {
 
     var body: some View {
         VStack(spacing: 24) {
-            VStack(spacing: 8) {
-                Text("Perfil do Pet")
-                    .appFontDarkerGrotesque(darkness: .SemiBold, size: 24)
-                
-                Text("Escolha uma foto (.png, .jpeg) para o perfil do seu pet.")
-                    .appFontDarkerGrotesque(darkness: .Regular, size: 17)
-                
-                PageProgressBar(totalPages: 4, currentPage: 2)
-                    .padding(.horizontal, 70)
-                    .padding(.top, 8)
-            }
+            PetFormHeader(title: "Perfil do Pet", text: "Escolha uma foto (.png, .jpeg) para o perfil do seu pet.", totalPages: 4, currentPage: 2)
 
             if let imageData = petCreationViewModel.photo,
                let uiImage = UIImage(data: imageData) {
