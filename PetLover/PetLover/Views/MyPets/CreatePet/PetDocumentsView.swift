@@ -31,28 +31,19 @@ struct PetDocumentsView: View {
         ZStack(alignment: .bottom) {
             ScrollView {
                 VStack(spacing: 16) {
-                    VStack(spacing: 8) {
-                        Text("Documentos")
-                            .appFontDarkerGrotesque(darkness: .SemiBold, size: 24)
-                        Text("Falta pouco! Adicione aqui informações a respeito do peso, alergias, e tudo o que achar relevante.")
-                            .appFontDarkerGrotesque(darkness: .Regular, size: 17)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 26)
-                        Text("Clique no card para selecionar o arquivo")
-                            .appFontDarkerGrotesque(darkness: .Regular, size: 17)
-                            .padding(.top)
-                        PageProgressBar(totalPages: 4, currentPage: 4)
-                            .padding(.horizontal, 70)
-                            .padding(.top, 8)
-                    }
+                    PetFormHeader(title: "Documentos", text: """
+Falta pouco! Adicione aqui informações a respeito do peso, alergias, e tudo o que achar relevante.
 
+Clique no card para selecionar o arquivo
+""", totalPages: 4, currentPage: 4)
+                    
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Título")
                             .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
                             .padding(.leading)
                         SinglelineTextField(text: $tempTitle, buttonPressed: $buttonPressed, label: "Qual o título desse documento?")
                     }
-
+                    
                     if petCreationViewModel.petDocuments.isEmpty {
                         SelectFileButton(tempURL: tempURL) {
                             isImporterPresented = true
@@ -66,7 +57,7 @@ struct PetDocumentsView: View {
                         }
                         .padding(.horizontal)
                     }
-
+                    
                     if petCreationViewModel.petDocuments.isEmpty {
                         SaveButton(tempTitle: tempTitle, tempURL: tempURL) {
                             let newDoc = PetDocument(title: tempTitle, fileURL: tempURL!)
@@ -90,12 +81,12 @@ struct PetDocumentsView: View {
                             }
                         )
                     }
-
+                    
                     Spacer()
                 }
                 .padding(.top, 40)
             }
-
+            
             SaveOrSelectButton(
                 tempTitle: tempTitle,
                 tempURL: tempURL,
