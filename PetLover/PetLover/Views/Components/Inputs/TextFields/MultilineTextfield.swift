@@ -10,45 +10,51 @@ import SwiftUI
 struct MultilineTextField: View {
     @Binding var text: String
     @Binding var buttonPressed: Bool
+    @State var fieldTitle: String
     
     var placeholder: String
     var minHeight: CGFloat = 94
     
     var body: some View {
-        VStack(alignment: .leading) {
-            ZStack(alignment: .topLeading) {
-                if text.isEmpty {
-                    Text(placeholder)
-                        .font(.custom("Darker Grotesque", size: 14).weight(.bold))
-                        .foregroundColor(Color.AppColors.secondary70DarkBlue)
-                        .padding(.top, 12)
-                        .padding(.leading, 8)
-                }
-                
-                TextEditor(text: $text)
-                    .font(.custom("Darker Grotesque", size: 14).weight(.bold))
-                    .foregroundColor(.black)
-                    .padding(.leading, 4)
-                    .background(Color.clear)
-                    .scrollContentBackground(.hidden)
-                    .onSubmit {
-                        text += "\n"
+        VStack(alignment: .leading, spacing: 8) {
+            Text(fieldTitle)
+                .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
+                .padding(.leading)
+            VStack(alignment: .leading) {
+                ZStack(alignment: .topLeading) {
+                    if text.isEmpty {
+                        Text(placeholder)
+                            .font(.custom("Darker Grotesque", size: 14).weight(.medium))
+                            .foregroundColor(Color.AppColors.secondary70DarkBlue)
+                            .padding(.top, 12)
+                            .padding(.leading, 8)
                     }
-                    .frame(minHeight: minHeight)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(lineWidth: 1)
-                    .foregroundColor(buttonPressed && text.isEmpty ? .AppColors.helperErrorRed : .black)
-            )
-            .padding(.horizontal)
-            
-            if buttonPressed && text.isEmpty {
-                Text("Campo obrigatório. Preencha antes de continuar.")
-                    .font(.custom("Darker Grotesque", size: 14).weight(.bold))
-                    .foregroundColor(Color.AppColors.helperErrorRed)
-                    .padding(.leading)
+                    
+                    TextEditor(text: $text)
+                        .font(.custom("Darker Grotesque", size: 14).weight(.medium))
+                        .foregroundColor(.black)
+                        .padding(.leading, 4)
+                        .background(Color.clear)
+                        .scrollContentBackground(.hidden)
+                        .onSubmit {
+                            text += "\n"
+                        }
+                        .frame(minHeight: minHeight)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(lineWidth: 1)
+                        .foregroundColor(buttonPressed && text.isEmpty ? .AppColors.helperErrorRed : .black)
+                )
+                .padding(.horizontal)
+                
+                if buttonPressed && text.isEmpty {
+                    Text("Campo obrigatório. Preencha antes de continuar.")
+                        .font(.custom("Darker Grotesque", size: 14).weight(.medium))
+                        .foregroundColor(Color.AppColors.helperErrorRed)
+                        .padding(.leading)
+                }
             }
         }
     }
@@ -59,7 +65,7 @@ struct MultilineTextField: View {
     @Previewable @State var buttonPressed: Bool = false
     
     VStack {
-        MultilineTextField(text: $text, buttonPressed: $buttonPressed, placeholder: "Fique à vontade para adicionar informações sobre seu pet, como alergias, remédios em uso, etc...")
+        MultilineTextField(text: $text, buttonPressed: $buttonPressed, fieldTitle: "Informações", placeholder: "Fique à vontade para adicionar informações sobre seu pet, como alergias, remédios em uso, etc...")
         
         Button(action: {
             if text.isEmpty {
