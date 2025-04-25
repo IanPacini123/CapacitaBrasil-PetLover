@@ -9,10 +9,18 @@ import SwiftUI
 
 struct InputButton: View {
     var label: String
-    @Binding var isSelected: Bool
+    var isSelected: Bool
+    var action: () -> Void
+    
+    init(label: String, isSelected: Bool, action: @escaping () -> Void) {
+        self.label = label
+        self.isSelected = isSelected
+        self.action = action
+    }
+    
     var body: some View {
         Button {
-            isSelected.toggle()
+            action()
         } label: {
             Text(label)
                 .foregroundStyle(isSelected ? .white : .black)
@@ -36,5 +44,7 @@ struct InputButton: View {
 #Preview {
     @Previewable @State var isSelected = false
     
-    InputButton(label: "Testing", isSelected: $isSelected)
+    InputButton(label: "Testing", isSelected: $isSelected.wrappedValue) {
+        print("teste")
+    }
 }
