@@ -41,7 +41,7 @@ Clique no card para selecionar o arquivo
                         Text("Título")
                             .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
                             .padding(.leading)
-                        SinglelineTextField(text: $tempTitle, buttonPressed: $buttonPressed, label: "Qual o título desse documento?")
+                        SinglelineTextField(text: $tempTitle, buttonPressed: $buttonPressed, isOptional: true, label: "Qual o título desse documento?", fieldTitle: "Título")
                     }
            
                     if petCreationViewModel.petDocuments.isEmpty {

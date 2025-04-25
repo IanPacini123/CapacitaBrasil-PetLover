@@ -86,7 +86,7 @@ struct AddReminderSheet: View {
                     }
                     
                     Section {
-                        SinglelineTextField(text: $title, buttonPressed: .constant(false), label: "")
+                        SinglelineTextField(text: $title, buttonPressed: .constant(false), isOptional: false, label: "", fieldTitle: "")
                     } header: {
                         Text("Título do Lembrete")
                             .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
