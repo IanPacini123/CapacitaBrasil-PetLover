@@ -82,16 +82,20 @@ struct AddReminderSheet: View {
                     } header: {
                         Text("Selecione o seu pet")
                             .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
+                            .textCase(nil)
                             .foregroundStyle(.black)
                     }
                     
                     Section {
-                        SinglelineTextField(text: $title, buttonPressed: .constant(false), isOptional: false, label: "", fieldTitle: "")
+                        SinglelineTextField(text: $title, buttonPressed: .constant(false), isOptional: false, label: "Título", fieldTitle: "")
+                            .padding(.horizontal, -10)
                     } header: {
                         Text("Título do Lembrete")
                             .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
+                            .textCase(nil)
                             .foregroundStyle(.black)
                     }
+//                    .background(.red)
                     
                     Section {
                         ScrollView(.horizontal, showsIndicators: false) {
@@ -112,6 +116,7 @@ struct AddReminderSheet: View {
                     } header: {
                         Text("Categoria")
                             .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
+                            .textCase(nil)
                             .foregroundStyle(.black)
                     }
                     
@@ -120,6 +125,7 @@ struct AddReminderSheet: View {
                     } header: {
                         Text("Horário")
                             .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
+                            .textCase(nil)
                             .foregroundStyle(.black)
                     }
                     
