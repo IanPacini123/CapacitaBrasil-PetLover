@@ -32,7 +32,7 @@ struct InputButton: View {
                             .foregroundStyle(Color.AppColors.secondary40Blue)
                     } else {
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(lineWidth: 2)
+                            .stroke(lineWidth: 1)
                             .foregroundStyle(.black)
                     }
                     
