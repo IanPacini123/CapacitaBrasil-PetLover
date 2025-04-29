@@ -17,6 +17,7 @@ class Reminder: Identifiable {
     var repeatDays: Set<WeekDays>
     var startTime: Date
     var endTime: Date?
+    var isCompleted: Bool
     
     init(
         title: String,
@@ -24,7 +25,8 @@ class Reminder: Identifiable {
         category: ReminderCategory,
         repeatDays: Set<WeekDays> = [],
         startTime: Date,
-        endTime: Date? = nil
+        endTime: Date? = nil,
+        isCompleted: Bool = false
     ){
         self.id = UUID()
         self.title = title
@@ -33,6 +35,7 @@ class Reminder: Identifiable {
         self.repeatDays = repeatDays
         self.startTime = startTime
         self.endTime = endTime
+        self.isCompleted = isCompleted
     }
 }
 

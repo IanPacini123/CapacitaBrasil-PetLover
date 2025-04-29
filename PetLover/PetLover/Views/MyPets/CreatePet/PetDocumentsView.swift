@@ -37,13 +37,9 @@ Falta pouco! Adicione aqui informações a respeito do peso, alergias, e tudo o 
 Clique no card para selecionar o arquivo
 """, totalPages: 4, currentPage: 4)
                     
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Título")
-                            .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
-                            .padding(.leading)
-                        SinglelineTextField(text: $tempTitle, buttonPressed: $buttonPressed, label: "Qual o título desse documento?")
-                    }
-           
+                    SinglelineTextField(text: $tempTitle, buttonPressed: $buttonPressed, isOptional: true, label: "Qual o título desse documento?", fieldTitle: "Título")
+                    
+                    
                     if petCreationViewModel.petDocuments.isEmpty {
                         SelectFileButton(tempURL: tempURL) {
                             isImporterPresented = true
