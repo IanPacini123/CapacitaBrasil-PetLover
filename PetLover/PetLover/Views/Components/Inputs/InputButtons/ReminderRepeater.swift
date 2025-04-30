@@ -19,13 +19,12 @@ struct ReminderRepeaterList: View {
             }
             .padding(.horizontal)
             
-            HStack(spacing: 6) {
+            HStack(spacing: 10) {
                 ForEach(WeekDays.allCases, id: \.self) { dia in
                     ReminderRepeaterButton(selectedDays: $selectedDays, isActive: $isActive, dia: dia)
                 }
             }
         }
-        .padding()
         .onChange(of: isActive) {
             selectedDays.removeAll()
         }
