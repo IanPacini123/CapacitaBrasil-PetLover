@@ -8,8 +8,13 @@ import SwiftData
 import Foundation
 import SwiftUI
 
-class PetViewModel: ObservableObject {
-    @Published var pets = [Pet]()
+@Observable
+class PetViewModel {
+    var pets = [Pet]()
+    
+    static var shared: PetViewModel = .init()
+    
+    private init() {}
     
     func createPet(
         context: ModelContext,
@@ -100,7 +105,7 @@ class PetViewModel: ObservableObject {
 }
 
 private struct PetTestesView: View {
-    @StateObject private var viewModel = PetViewModel()
+    private var viewModel = PetViewModel.shared
     @Environment(\.modelContext) private var context
     
     @State private var name = ""
@@ -199,14 +204,20 @@ private struct PetTestesView: View {
                     }
                     .padding()
                     .buttonStyle(.borderedProminent)
+                    
+                    NavigationLink(destination: ReminderView(), label: {
+                        Text("iojfuhgyd")
+                    })
                 }
                 .padding()
             }
+            
         }
         .navigationTitle("Meus Pets")
         .onAppear {
             viewModel.fetchPets(context: context)
         }
+    
     }
     
 }

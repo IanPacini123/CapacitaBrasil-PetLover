@@ -11,7 +11,7 @@ import UniformTypeIdentifiers
 
 struct PetDocumentsView: View {
     @ObservedObject var petCreationViewModel: PetCreationViewModel
-    @ObservedObject var petViewModel = PetViewModel()
+    var petViewModel: PetViewModel
     @Binding var path: NavigationPath
 
     @Environment(\.dismiss) var dismiss
@@ -37,13 +37,13 @@ Falta pouco! Adicione aqui informações a respeito do peso, alergias, e tudo o 
 Clique no card para selecionar o arquivo
 """, totalPages: 4, currentPage: 4)
                     
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Título")
-                            .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
-                            .padding(.leading)
-                        SinglelineTextField(text: $tempTitle, buttonPressed: $buttonPressed, label: "Qual o título desse documento?")
-                    }
-           
+                    //                    VStack(alignment: .leading, spacing: 8) {
+                    //                        Text("Título")
+                    //                            .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
+                    //                            .padding(.leading)
+                    //                        SinglelineTextField(text: $tempTitle, buttonPressed: $buttonPressed, label: "Qual o título desse documento?")
+                    //                    }
+                    
                     if petCreationViewModel.petDocuments.isEmpty {
                         SelectFileButton(tempURL: tempURL) {
                             isImporterPresented = true

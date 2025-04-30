@@ -184,9 +184,9 @@ enum PetFlowDestination: Hashable {
 }
 
 struct FluxoAdicionarPet: View {
-    @Query private var pets: [Pet]
     @State var path = NavigationPath()
-    @ObservedObject var petCreationViewModel: PetCreationViewModel
+    var viewModel = ReminderViewModel.shared
+    var petViewModel = PetViewModel.shared
     var body: some View {
         NavigationStack(path: $path) {
             ScrollView {
@@ -200,11 +200,11 @@ struct FluxoAdicionarPet: View {
                             .background(Color.AppColors.primary30Beige)
                     }
                     
-                    if pets.isEmpty {
+                    if petViewModel.pets.isEmpty {
                         Text("Nenhum pet cadastrado.")
                             .padding()
                     } else {
-                        ForEach(pets, id: \.self) { pet in
+                        ForEach(petViewModel.pets, id: \.self) { pet in
                             HStack {
                                 VStack(alignment: .leading, spacing: 8) {
                                     Text(pet.name)
