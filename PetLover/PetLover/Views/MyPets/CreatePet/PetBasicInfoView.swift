@@ -181,15 +181,16 @@ enum PetFlowDestination: Hashable {
     case petMedicalConditions
     case petProfile
     case petBasicInfo
+    case reminders
 }
 
 struct FluxoAdicionarPet: View {
-    @Query private var pets: [Pet]
     @State var path = NavigationPath()
-    @ObservedObject var petCreationViewModel: PetCreationViewModel
+    @StateObject var petCreationViewModel = PetCreationViewModel()
+    var petViewModel = PetViewModel.shared
+    
     var body: some View {
         NavigationStack(path: $path) {
-            ScrollView {
                 VStack {
                     Button(action: {
                         path.append(PetFlowDestination.petBasicInfo)
@@ -200,11 +201,20 @@ struct FluxoAdicionarPet: View {
                             .background(Color.AppColors.primary30Beige)
                     }
                     
-                    if pets.isEmpty {
+                    Button(action: {
+                        path.append(PetFlowDestination.reminders)
+                    }) {
+                        Text("Adicionar lembrete")
+                            .font(.title)
+                            .padding()
+                            .background(Color.AppColors.primary30Beige)
+                    }
+                    
+                    if petViewModel.pets.isEmpty {
                         Text("Nenhum pet cadastrado.")
                             .padding()
                     } else {
-                        ForEach(pets, id: \.self) { pet in
+                        ForEach(petViewModel.pets, id: \.self) { pet in
                             HStack {
                                 VStack(alignment: .leading, spacing: 8) {
                                     Text(pet.name)
@@ -234,7 +244,7 @@ struct FluxoAdicionarPet: View {
                 .navigationDestination(for: PetFlowDestination.self) { destination in
                     switch destination {
                     case .petDocuments:
-                        PetDocumentsView(petCreationViewModel: petCreationViewModel, path: $path)
+                        PetDocumentsView(petCreationViewModel: petCreationViewModel, path: $path, petViewModel: petViewModel)
                     case .petMedicalConditions:
                         PetMedicalConditionsView(petCreationViewModel: petCreationViewModel, path: $path)
                     case .petProfile:
@@ -242,9 +252,10 @@ struct FluxoAdicionarPet: View {
                     case .petBasicInfo:
                         PetBasicInfoView(petCreationViewModel: petCreationViewModel, path: $path
                         )
+                    case .reminders:
+                        ReminderView()
                     }
                 }
-            }
         }
     }
 }

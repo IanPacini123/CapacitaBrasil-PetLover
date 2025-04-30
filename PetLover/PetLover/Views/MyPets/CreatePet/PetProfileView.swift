@@ -46,7 +46,6 @@ struct PetProfileView: View {
                     Text("Fotossíntese").bold()
                         .appFontDarkerGrotesque(darkness: .Regular, size: 18)
                 }
-                
             }
 
             VStack(spacing: 13) {
@@ -64,9 +63,9 @@ struct PetProfileView: View {
                         .cornerRadius(12)
                         .padding(.horizontal)
                 }
-                .onChange(of: selectedItem) { newItem in
+                .onChange(of: selectedItem) {
                     Task {
-                        if let data = try? await newItem?.loadTransferable(type: Data.self) {
+                        if let data = try? await selectedItem?.loadTransferable(type: Data.self) {
                             petCreationViewModel.photo = data
                         }
                     }

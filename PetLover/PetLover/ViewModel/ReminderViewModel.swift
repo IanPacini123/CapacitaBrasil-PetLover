@@ -9,8 +9,13 @@ import SwiftData
 import Foundation
 import SwiftUI
 
-class ReminderViewModel: ObservableObject {
-    @Published var reminders = [Reminder]()
+@Observable
+class ReminderViewModel {
+    var reminders = [Reminder]()
+    
+    static var shared: ReminderViewModel = .init()
+    
+    private init() {}
     
     func createReminder(
         context: ModelContext,
@@ -77,10 +82,10 @@ class ReminderViewModel: ObservableObject {
     }
 }
 
-private struct ReminderView: View {
+struct ReminderView: View {
     @Environment(\.modelContext) private var context
-    @StateObject var viewModel = ReminderViewModel()
-    @StateObject var petViewModel = PetViewModel()
+    private var viewModel = ReminderViewModel.shared
+    private var petViewModel = PetViewModel.shared
     
     @State private var title: String = ""
     @State private var date = Date()
@@ -163,7 +168,6 @@ private struct ReminderView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .padding()
-                .disabled(selectedPet == nil)
                 
                 Text("Lista de lembretes:")
                     .font(.title)
@@ -180,34 +184,6 @@ private struct ReminderView: View {
                                 VStack(alignment: .leading, spacing: 8) {
                                     Text("Título: \(reminder.title)")
                                         .font(.headline)
-                                    
-                                    Text("Data: \(reminder.date.formatted(date: .abbreviated, time: .omitted))")
-                                    
-                                    Text("Início: \(reminder.startTime.formatted(date: .omitted, time: .shortened))")
-                                    
-                                    Text("Categoria: \(reminder.category.displayText)")
-                                    
-                                    if !reminder.repeatDays.isEmpty {
-                                        Text("Repetição: \(reminder.repeatDays.map { $0.displayText }.joined(separator: ", "))")
-                                    } else {
-                                        Text("Repetição: não se repete")
-                                    }
-                                    
-                                    HStack {
-                                        Button("Editar") {
-                                            viewModel.updateReminder(
-                                                context: context,
-                                                reminder: reminder,
-                                                title: "\(reminder.title) (editado)"
-                                            )
-                                        }
-                                        .buttonStyle(.bordered)
-                                        
-                                        Button("Remover") {
-                                            viewModel.deleteReminder(context: context, pet: pet, reminder: reminder)
-                                        }
-                                        .buttonStyle(.bordered)
-                                    }
                                 }
                                 .padding()
                                 .background(Color.gray.opacity(0.05))
