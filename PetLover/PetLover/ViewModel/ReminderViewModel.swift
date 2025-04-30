@@ -81,7 +81,8 @@ class ReminderViewModel {
         }
     }
 }
- struct ReminderView: View {
+
+struct ReminderView: View {
     @Environment(\.modelContext) private var context
     private var viewModel = ReminderViewModel.shared
     private var petViewModel = PetViewModel.shared
@@ -167,7 +168,6 @@ class ReminderViewModel {
                 }
                 .buttonStyle(.borderedProminent)
                 .padding()
-//                .disabled(selectedPet == nil)
                 
                 Text("Lista de lembretes:")
                     .font(.title)

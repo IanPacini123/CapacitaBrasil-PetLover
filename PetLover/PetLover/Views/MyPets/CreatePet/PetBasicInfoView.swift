@@ -181,20 +181,30 @@ enum PetFlowDestination: Hashable {
     case petMedicalConditions
     case petProfile
     case petBasicInfo
+    case reminders
 }
 
 struct FluxoAdicionarPet: View {
     @State var path = NavigationPath()
-    var viewModel = ReminderViewModel.shared
+    @StateObject var petCreationViewModel = PetCreationViewModel()
     var petViewModel = PetViewModel.shared
+    
     var body: some View {
         NavigationStack(path: $path) {
-            ScrollView {
                 VStack {
                     Button(action: {
                         path.append(PetFlowDestination.petBasicInfo)
                     }) {
                         Text("Adicionar Pet")
+                            .font(.title)
+                            .padding()
+                            .background(Color.AppColors.primary30Beige)
+                    }
+                    
+                    Button(action: {
+                        path.append(PetFlowDestination.reminders)
+                    }) {
+                        Text("Adicionar lembrete")
                             .font(.title)
                             .padding()
                             .background(Color.AppColors.primary30Beige)
@@ -234,7 +244,7 @@ struct FluxoAdicionarPet: View {
                 .navigationDestination(for: PetFlowDestination.self) { destination in
                     switch destination {
                     case .petDocuments:
-                        PetDocumentsView(petCreationViewModel: petCreationViewModel, path: $path)
+                        PetDocumentsView(petCreationViewModel: petCreationViewModel, path: $path, petViewModel: petViewModel)
                     case .petMedicalConditions:
                         PetMedicalConditionsView(petCreationViewModel: petCreationViewModel, path: $path)
                     case .petProfile:
@@ -242,9 +252,10 @@ struct FluxoAdicionarPet: View {
                     case .petBasicInfo:
                         PetBasicInfoView(petCreationViewModel: petCreationViewModel, path: $path
                         )
+                    case .reminders:
+                        ReminderView()
                     }
                 }
-            }
         }
     }
 }
