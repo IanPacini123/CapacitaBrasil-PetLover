@@ -17,7 +17,7 @@ struct ModalLembrete: View {
                 
                 Text("Lembrete")
                 .appFontDarkerGrotesque(darkness: .Black, size: 32)
-                
+                Text("lalallala")
                 Image("IconMenu")
             }
             .padding(.horizontal, 25)
