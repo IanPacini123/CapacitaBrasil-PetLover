@@ -17,11 +17,12 @@ struct ReminderRepeaterList: View {
                 Text("Repetir")
                     .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
             }
-            .padding(.horizontal)
             
-            HStack(spacing: 10) {
-                ForEach(WeekDays.allCases, id: \.self) { dia in
-                    ReminderRepeaterButton(selectedDays: $selectedDays, isActive: $isActive, dia: dia)
+            Grid {
+                GridRow {
+                    ForEach(WeekDays.allCases, id: \.self) { dia in
+                        ReminderRepeaterButton(selectedDays: $selectedDays, isActive: $isActive, dia: dia)
+                    }
                 }
             }
         }
