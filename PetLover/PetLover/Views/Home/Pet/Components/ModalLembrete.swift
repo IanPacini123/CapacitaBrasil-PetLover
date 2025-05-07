@@ -6,18 +6,40 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ModalLembrete: View {
-//    var petViewModel: PetViewModel
+    @Environment(\.dismiss) private var dismiss
+
+    var context: ModelContext
+    var reminderViewModel: ReminderViewModel
+    
+    var pet: Pet
     var reminder: Reminder
+    
     @State var selectedDays: Set<WeekDays> = []
     @State var isMenuVisible: Bool = false
+    
+    
+    let formatter: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "dd/MM/yyyy"
+        return df
+    }()
+    
+    let hourFormatter: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "HH:mm"
+        return df
+    }()
+
+
     var body: some View {
         ZStack(alignment: .topTrailing) {
             VStack(alignment: .center) {
                 HStack {
                     Button(action: {
-                        
+                        dismiss()
                     }, label: {
                         Image("IconExit")
                     })
@@ -44,51 +66,48 @@ struct ModalLembrete: View {
                     })
                 }
                 
-                VStack(alignment: .leading) {
-                    VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 16) {
+                    VStack(alignment: .leading, spacing: 8) {
                         Text(reminder.title)
                             .appFontDarkerGrotesque(darkness: .Black, size: 32)
                         
                         HStack {
                             Image("IconClock")
-                            Text("\(reminder.startTime)")
+                            Text(hourFormatter.string(from: reminder.startTime))
                                 .appFontDarkerGrotesque(darkness: .Medium, size: 19)
                         }
                         
                         if (reminder.endTime != nil) {
                             HStack {
                                 Image("IconClock")
-                                Text("\(reminder.endTime)")
-                                    .appFontDarkerGrotesque(darkness: .Medium, size: 19)
+                                Text(hourFormatter.string(from: reminder.endTime ?? Date())) .appFontDarkerGrotesque(darkness: .Medium, size: 19)
                             }
                         }
                         
                         HStack {
                             Image("IconCalendar")
-                            Text("\(reminder.date)")
+                            Text(formatter.string(from: reminder.date))
                                 .appFontDarkerGrotesque(darkness: .Medium, size: 19)
                         }
                         
                         Divider()
                             .background(Color.AppColors.nearNeutralLightLightGray)
-                        
+                    }
+                    
+                   
                         Text("Categoria")
                             .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
                         
-                           
                         Text(reminder.category.displayText)               .appFontDarkerGrotesque(darkness: .Bold, size: 17)
-                                    .foregroundStyle(Color.AppColors.nearNeutralLightLightGray)
-                                    .padding(.horizontal, 25)
-                                    .padding(.vertical, 12)
-                                    .background(
-                                        Color.AppColors.secondary40Blue
-                                    )
-                                    .cornerRadius(8)
-                            
-                        
-                        
-                        ReminderRepeaterList(selectedDays: $selectedDays)
-                    }
+                            .foregroundStyle(Color.AppColors.nearNeutralLightLightGray)
+                            .padding(.horizontal, 25)
+                            .padding(.vertical, 12)
+                            .background(
+                                Color.AppColors.secondary40Blue
+                            )
+                            .cornerRadius(8)
+                    
+                    ReminderRepeaterList(selectedDays: $selectedDays)
                 }
             }
             
@@ -107,7 +126,7 @@ struct ModalLembrete: View {
                         .frame(width: 113, height: 1)
                     
                     Button(action: {
-                        // fazer ele excluirrr
+                        reminderViewModel.deleteReminder(context: context, pet: pet, reminder: reminder)
                         isMenuVisible = false
                     }, label: {
                         Text("Excluir")
@@ -118,15 +137,13 @@ struct ModalLembrete: View {
                 .padding()
                 .background(Color.white)
                 .cornerRadius(12)
-                .shadow(radius: 4)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(lineWidth: 1)
+                }
                 .padding(.top, 60)
-                .padding(.trailing, 16)
             }
         }
         .padding()
     }
-}
-
-#Preview {
-    ModalLembrete(reminder: Reminder(title: "Vacinaaaa", date: Date(), category: .eventos, startTime: Date(), endTime: Date()))
 }
