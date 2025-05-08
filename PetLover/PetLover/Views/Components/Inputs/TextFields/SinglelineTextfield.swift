@@ -18,7 +18,6 @@ struct SinglelineTextField: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(fieldTitle)
                 .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
-                .padding(.leading)
             
             VStack(alignment: .leading, spacing: 12) {
                 ZStack(alignment: .leading) {
@@ -40,7 +39,6 @@ struct SinglelineTextField: View {
                         .stroke(lineWidth: 1)
                         .foregroundColor((buttonPressed && text.isEmpty) && !isOptional ? .AppColors.helperErrorRed : .black)
                 )
-                .padding(.horizontal)
                 
                 if (buttonPressed && text.isEmpty) && !isOptional {
                     Text("Campo obrigatório. Preencha antes de continuar.")

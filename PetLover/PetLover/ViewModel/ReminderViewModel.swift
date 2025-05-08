@@ -28,6 +28,7 @@ class ReminderViewModel {
         endTime: Date? = nil
     ) {
         let newReminder = Reminder(
+            petId: UUID(),
             title: title,
             date: date,
             category: category,

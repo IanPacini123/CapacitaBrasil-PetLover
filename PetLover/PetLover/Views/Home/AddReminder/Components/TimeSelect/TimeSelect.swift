@@ -14,14 +14,12 @@ struct TimeSelect: View {
     @Binding var userStartDate: Date
     @Binding var userEndDate: Date
     
-    @Binding var startTimeOfDay: TimeOfDay
-    @Binding var endTimeOfDay: TimeOfDay
+    @State var startTimeOfDay: TimeOfDay = .AM
+    @State var endTimeOfDay: TimeOfDay = .AM
 
-    init(startingDate: Binding<Date>, endingDate: Binding<Date>, startTimeOfDay: Binding<TimeOfDay>, endTimeOfDay: Binding<TimeOfDay>) {
+    init(startingDate: Binding<Date>, endingDate: Binding<Date>) {
         self._userStartDate = startingDate
         self._userEndDate = endingDate
-        self._startTimeOfDay = startTimeOfDay
-        self._endTimeOfDay = endTimeOfDay
 
         _startDate = State(initialValue: startingDate.wrappedValue)
         _endDate = State(initialValue: endingDate.wrappedValue)
@@ -29,9 +27,6 @@ struct TimeSelect: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Horário")
-                .appFontDarkerGrotesque(darkness: .ExtraBold, size: 22)
-            
             createRow(
                 title: "Início",
                 date: $startDate,
@@ -95,7 +90,7 @@ struct TimeSelect: View {
                 .padding(.vertical, 8)
                 .padding(.horizontal, 12)
                 .foregroundStyle(.black)
-                .font(.appFontDarkerGrotesque(darkness: .SemiBold, size: 22))
+                .font(.appFontDarkerGrotesque(darkness: .SemiBold, size: 17))
                 .background {
                     reusableBG
                 }
@@ -105,7 +100,7 @@ struct TimeSelect: View {
                                in: dateRange,
                                displayedComponents: .hourAndMinute)
                         .foregroundStyle(.black)
-                        .font(.appFontDarkerGrotesque(darkness: .SemiBold, size: 22))
+                        .font(.appFontDarkerGrotesque(darkness: .SemiBold, size: 17))
                         .blendMode(.destinationOver)
                 }
             
@@ -130,7 +125,7 @@ struct TimeSelect: View {
                 .padding(.horizontal, 20)
                 .padding(.vertical, 6)
         }
-        .font(.appFontDarkerGrotesque(darkness: .SemiBold, size: 22))
+        .font(.appFontDarkerGrotesque(darkness: .SemiBold, size: 17))
         .background {
             HStack {
                 if timeOfDay == .PM {
@@ -226,12 +221,10 @@ struct TimeSelect: View {
 private struct previewStruct: View {
     @State var startDate = Date.now
     @State var endDate = Date.now
-    @State var startTimeOfDay: TimeOfDay = .AM
-    @State var endTimeOfDay: TimeOfDay = .AM
     
     var body: some View {
         VStack {
-            TimeSelect(startingDate: $startDate, endingDate: $endDate, startTimeOfDay: $startTimeOfDay, endTimeOfDay: $endTimeOfDay)
+            TimeSelect(startingDate: $startDate, endingDate: $endDate)
             
             Group {
                 Text(startDate.formatted(.dateTime .day() .month() .year() .hour() . minute()))
