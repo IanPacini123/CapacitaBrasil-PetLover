@@ -232,7 +232,7 @@ private struct FluxoAdicionarPet: View {
                 .navigationDestination(for: PetFlowDestination.self) { destination in
                     switch destination {
                     case .petDocuments:
-                        PetDocumentsView(petCreationViewModel: petCreationViewModel, path: $path, petViewModel: petViewModel)
+                        PetDocumentsView(petCreationViewModel: petCreationViewModel, path: $path)
                     case .petMedicalConditions:
                         PetMedicalConditionsView(petCreationViewModel: petCreationViewModel, path: $path)
                     case .petProfile:

@@ -13,7 +13,7 @@ struct PetDocumentsView: View {
     @ObservedObject var petCreationViewModel: PetCreationViewModel
     @Binding var path: NavigationPath
     
-    var petViewModel: PetViewModel
+    private var viewModel = PetViewModel.shared
 
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) private var context
@@ -26,6 +26,11 @@ struct PetDocumentsView: View {
     var showBottomButton: Bool {
         !(petCreationViewModel.petDocuments.count >= 2 ||
           (petCreationViewModel.petDocuments.count >= 1 && tempURL != nil))
+    }
+    
+    init(petCreationViewModel: PetCreationViewModel, path: Binding<NavigationPath>) {
+        self.petCreationViewModel = petCreationViewModel
+        self._path = path
     }
 
     var body: some View {
@@ -133,7 +138,7 @@ Clique no card para selecionar o arquivo
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    petViewModel.createPet(context: context,
+                    PetViewModel.shared.createPet(context: context,
                                            name: petCreationViewModel.name,
                                            birthDate: petCreationViewModel.birthDate ?? Date(),
                                            specie: petCreationViewModel.specie ?? .dog,

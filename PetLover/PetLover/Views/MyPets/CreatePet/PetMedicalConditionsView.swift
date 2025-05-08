@@ -9,10 +9,13 @@ import SwiftUI
 
 struct PetMedicalConditionsView: View {
     @ObservedObject var petCreationViewModel: PetCreationViewModel
+    
     @Environment(\.dismiss) var dismiss
+    
     @Binding var path: NavigationPath
     
     @State private var isWeightPickerPresented = false
+    
     @State private var buttonPressed = false
     
     private let weightValues: [Double] = stride(from: 0.1, through: 100, by: 0.1).map { $0 }

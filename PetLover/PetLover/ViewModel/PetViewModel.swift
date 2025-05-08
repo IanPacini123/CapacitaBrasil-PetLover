@@ -98,6 +98,7 @@ class PetViewModel {
         do {
             let descriptor = FetchDescriptor<Pet>(sortBy: [SortDescriptor(\.name)])
             pets = try context.fetch(descriptor)
+            print(pets.count)
         } catch {
             print("Pets não encontrados")
         }
