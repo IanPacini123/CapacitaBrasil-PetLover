@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AddReminderSheet: View {
     @StateObject private var petViewModel = PetViewModel()
+    @StateObject private var reminderViewModel = ReminderViewModel()
     @Environment(\.modelContext) private var context
     
     @State var selectedpet: Pet? = nil {
@@ -21,7 +22,7 @@ struct AddReminderSheet: View {
     
     @State var petId: UUID?
     @State var title: String = ""
-    @State var date: Date?
+    @State var date: Date = .now
     @State var category: ReminderCategory?
     @State var repeatDays: Set<WeekDays> = []
     @State var startTime: Date
@@ -29,6 +30,8 @@ struct AddReminderSheet: View {
     
     @Binding var isShowing: Bool
     @State private var error: [reminderSheetErrorCase] = []
+    @State var shownDate: Date? = nil
+    
     
     init(isShowing: Binding<Bool>) {
         self._isShowing = isShowing
@@ -45,36 +48,8 @@ struct AddReminderSheet: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Button {
-                    isShowing = false
-                } label: {
-                    Image(systemName: "multiply")
-                        .font(.custom("", size: 30))
-                }
-                
-                Spacer()
-                
-                Button {
-                    // TODO: Logica de adicionar reminder nos dados do usuario.
-                    print(generateReminder())
-                } label: {
-                    Text("Concluir")
-                        .appFontDarkerGrotesque(darkness: .SemiBold, size: 17)
-                        .foregroundStyle(hasFieldMissing() ?
-                                         Color.AppColors.secondary60BlueishGray :
-                                            Color.AppColors.secondary40Blue)
-                }
-                .disabled(hasFieldMissing())
-            }
-            .foregroundStyle(Color.AppColors.secondary60BlueishGray)
-            .padding(.horizontal, 18)
-            .padding(20)
-            .overlay {
-                Text("Adicionar")
-                    .appFontDarkerGrotesque(darkness: .Black, size: 32)
-                    .foregroundStyle(Color.AppColors.secondary60BlueishGray)
-            }
+            formHeader
+            
             Form {
                 Group {
                     Section {
@@ -88,20 +63,22 @@ struct AddReminderSheet: View {
                     
                     Section {
                         SinglelineTextField(text: $title, buttonPressed: .constant(false), isOptional: false, label: "Título", fieldTitle: "")
-                            .padding(.horizontal, -10)
                     } header: {
                         Text("Título do Lembrete")
                             .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
                             .textCase(nil)
                             .foregroundStyle(.black)
                     }
-//                    .background(.red)
                     
                     Section {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
                                 InputButton(label: "Eventos", isSelected: $category.wrappedValue == .eventos) {
-                                    self.category = .eventos
+                                    if self.category == .eventos {
+                                        
+                                    } else {
+                                        self.category = .eventos
+                                    }
                                 }
                                 InputButton(label: "Cuidados diários", isSelected: $category.wrappedValue == .cuidadosDiarios) {
                                     self.category = .cuidadosDiarios
@@ -129,19 +106,106 @@ struct AddReminderSheet: View {
                             .foregroundStyle(.black)
                     }
                     
+                    Section {
+                        HStack {
+                            Text(shownDate?.formatted(date: .abbreviated, time: .omitted) ?? "para qual data?")
+                                .appFontDarkerGrotesque(darkness: .Medium, size: 14)
+                            
+                            Spacer()
+                            
+                            Image(systemName: "chevron.right")
+                        }
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 16)
+                        .background {
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke()
+                                .foregroundStyle(.black)
+                        }
+                        .overlay {
+                            HStack {
+                                DatePicker("",
+                                           selection: $date,
+                                           displayedComponents: .date)
+                                DatePicker("",
+                                           selection: $date,
+                                           displayedComponents: .date)
+                            }
+                            .blendMode(.destinationOver)
+                        }
+                    } header: {
+                        Text("Data")
+                            .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
+                            .textCase(nil)
+                            .foregroundStyle(.black)
+                    }
+
                     
                     Section {
                         ReminderRepeaterList(selectedDays: $repeatDays)
                     }
                 }
                 .listRowInsets(.init(top:4, leading: 4, bottom: 4, trailing: 4))
-
-
             }
             .scrollContentBackground(.hidden)
         }
         .onAppear {
             petViewModel.fetchPets(context: context)
+        }
+        .onChange(of: date) { _, _ in
+            shownDate = date
+        }
+    }
+    
+    private var formHeader: some View {
+        HStack {
+            Button {
+                isShowing = false
+            } label: {
+                Image(systemName: "multiply")
+                    .font(.custom("", size: 30))
+            }
+            
+            Spacer()
+            
+            Button {
+                // TODO: Logica de adicionar reminder nos dados do usuario.
+                do {
+                    guard let pet = selectedpet else {
+                        throw reminderSheetErrorCase.selectPet
+                    }
+                    guard let category = category else {
+                        throw reminderSheetErrorCase.addCategory
+                    }
+                    if title == "" {
+                        throw reminderSheetErrorCase.addTitle
+                    }
+                    
+                    reminderViewModel.createReminder(context: context,
+                                                     pet: pet,
+                                                     title: title,
+                                                     date: date,
+                                                     category: category,
+                                                     startTime: startTime)
+                } catch {
+                    checkFields()
+                }
+            } label: {
+                Text("Concluir")
+                    .appFontDarkerGrotesque(darkness: .SemiBold, size: 17)
+                    .foregroundStyle(hasFieldMissing() ?
+                                     Color.AppColors.secondary60BlueishGray :
+                                        Color.AppColors.secondary40Blue)
+            }
+            .disabled(hasFieldMissing())
+        }
+        .foregroundStyle(Color.AppColors.secondary60BlueishGray)
+        .padding(.horizontal, 18)
+        .padding(20)
+        .overlay {
+            Text("Adicionar")
+                .appFontDarkerGrotesque(darkness: .Black, size: 32)
+                .foregroundStyle(Color.AppColors.secondary60BlueishGray)
         }
     }
     
@@ -195,7 +259,7 @@ struct AddReminderSheet: View {
         return newReminder
     }
     
-    private enum reminderSheetErrorCase {
+    private enum reminderSheetErrorCase: Error {
         case selectPet, addTitle, addCategory
     }
 }

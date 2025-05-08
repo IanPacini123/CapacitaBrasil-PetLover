@@ -90,7 +90,7 @@ struct TimeSelect: View {
                 .padding(.vertical, 8)
                 .padding(.horizontal, 12)
                 .foregroundStyle(.black)
-                .font(.appFontDarkerGrotesque(darkness: .SemiBold, size: 22))
+                .font(.appFontDarkerGrotesque(darkness: .SemiBold, size: 17))
                 .background {
                     reusableBG
                 }
@@ -100,7 +100,7 @@ struct TimeSelect: View {
                                in: dateRange,
                                displayedComponents: .hourAndMinute)
                         .foregroundStyle(.black)
-                        .font(.appFontDarkerGrotesque(darkness: .SemiBold, size: 22))
+                        .font(.appFontDarkerGrotesque(darkness: .SemiBold, size: 17))
                         .blendMode(.destinationOver)
                 }
             
@@ -125,7 +125,7 @@ struct TimeSelect: View {
                 .padding(.horizontal, 20)
                 .padding(.vertical, 6)
         }
-        .font(.appFontDarkerGrotesque(darkness: .SemiBold, size: 22))
+        .font(.appFontDarkerGrotesque(darkness: .SemiBold, size: 17))
         .background {
             HStack {
                 if timeOfDay == .PM {
