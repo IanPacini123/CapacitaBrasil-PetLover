@@ -11,6 +11,9 @@ struct PetIdentifier: View {
     //essas variaveis nao vao existir quando conectar com o swiftdata
     @State var isEmpty: Bool
     @State var petName: String
+    @State var action = {
+        
+    }
     
     var body: some View {
         VStack {
@@ -34,7 +37,7 @@ struct PetIdentifier: View {
                     .padding(.bottom, 9)
                     
                     LargeButton(label: "Adicionar Pet") {
-                        print("Pet adicionado")
+                        action()
                     }
                     .frame(width: 149, height: 44)
                 }

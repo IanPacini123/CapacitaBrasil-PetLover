@@ -172,19 +172,7 @@ struct PetBasicInfoView: View {
     }
 }
 
-
-
-// testes de view e navegação que depois serão passados pra home
-
-enum PetFlowDestination: Hashable {
-    case petDocuments
-    case petMedicalConditions
-    case petProfile
-    case petBasicInfo
-    case reminders
-}
-
-struct FluxoAdicionarPet: View {
+private struct FluxoAdicionarPet: View {
     @State var path = NavigationPath()
     @StateObject var petCreationViewModel = PetCreationViewModel()
     var petViewModel = PetViewModel.shared
