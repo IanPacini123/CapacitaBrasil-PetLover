@@ -8,8 +8,13 @@ import SwiftData
 import Foundation
 import SwiftUI
 
-class PetViewModel: ObservableObject {
-    @Published var pets = [Pet]()
+@Observable
+class PetViewModel {
+    var pets = [Pet]()
+    
+    static var shared: PetViewModel = .init()
+    
+    private init() {}
     
     func createPet(
         context: ModelContext,
@@ -40,11 +45,11 @@ class PetViewModel: ObservableObject {
         context.insert(newPet)
         
         do {
-                try context.save()
-                print("Pet salvo com sucesso!")
-            } catch {
-                print("Erro ao salvar o pet: \(error.localizedDescription)")
-            }
+            try context.save()
+            print("Pet salvo com sucesso!")
+        } catch {
+            print("Erro ao salvar o pet: \(error.localizedDescription)")
+        }
         
         fetchPets(context: context)
     }
@@ -98,122 +103,3 @@ class PetViewModel: ObservableObject {
         }
     }
 }
-
-private struct PetTestesView: View {
-    @StateObject private var viewModel = PetViewModel()
-    @Environment(\.modelContext) private var context
-    
-    @State private var name = ""
-    @State private var birthDate = Date()
-    @State private var specie: SpeciesOptions = .dog
-    @State private var breed = ""
-    @State private var castrationStatus: CastrationStatus = .yes
-    @State private var weight = ""
-    @State private var infos = ""
-    @State private var gender: GenderOptions = .male
-    
-    var body: some View {
-        VStack {
-            List(viewModel.pets, id: \.id) { pet in
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text(pet.name).font(.headline)
-                        Text(pet.specie.rawValue).font(.subheadline)
-                    }
-                    Spacer()
-                    
-                    Button("Atualizar") {
-                        viewModel.updatePet(
-                            context: context,
-                            pet: pet,
-                            name: name.isEmpty ? pet.name : name,
-                            birthDate: birthDate,
-                            specie: specie,
-                            breed: breed.isEmpty ? pet.breed : breed,
-                            castrationStatus: castrationStatus,
-                            weight: Double(weight) ?? pet.weight,
-                            infos: infos.isEmpty ? pet.infos : infos,
-                            gender: gender
-                        )
-                    }
-                    Button("Deletar") {
-                        viewModel.deletePet(context: context, pet: pet)
-                    }
-                    
-                }
-            }
-            
-            Spacer()
-            
-            ScrollView {
-                VStack(alignment: .leading) {
-                    TextField("Nome", text: $name)
-                        .padding()
-                    
-                    DatePicker("Data de Nascimento", selection: $birthDate, displayedComponents: .date)
-                        .padding()
-                    
-                    Picker("Espécie", selection: $specie) {
-                        ForEach(SpeciesOptions.allCases, id: \.self) { specie in
-                            Text(specie.displayName).tag(specie)
-                        }
-                    }
-                    .padding()
-                    
-                    TextField("Raça", text: $breed)
-                        .padding()
-                    
-                    Picker("Status de Castração", selection: $castrationStatus) {
-                        ForEach(CastrationStatus.allCases, id: \.self) { status in
-                            Text(status.displayText).tag(status)
-                        }
-                    }
-                    .padding()
-                    
-                    TextField("Peso (kg)", text: $weight)
-                        .keyboardType(.decimalPad)
-                        .padding()
-                    
-                    TextField("Informações", text: $infos)
-                        .padding()
-                    
-                    Picker("Gênero", selection: $gender) {
-                        ForEach(GenderOptions.allCases, id: \.self) { gender in
-                            Text(gender.displayText).tag(gender)
-                        }
-                    }
-                    .padding()
-                    
-                    Button("Criar Pet") {
-                        viewModel.createPet(
-                            context: context,
-                            name: name,
-                            birthDate: birthDate,
-                            specie: specie,
-                            breed: breed,
-                            castrationStatus: castrationStatus,
-                            weight: Double(weight) ?? 0.0,
-                            infos: infos,
-                            gender: gender
-                        )
-                    }
-                    .padding()
-                    .buttonStyle(.borderedProminent)
-                }
-                .padding()
-            }
-        }
-        .navigationTitle("Meus Pets")
-        .onAppear {
-            viewModel.fetchPets(context: context)
-        }
-    }
-    
-}
-
-
-#Preview {
-    PetTestesView()
-        .modelContainer(for: Pet.self, inMemory: true)
-}
-

@@ -19,7 +19,7 @@ class PetCreationViewModel: ObservableObject {
     @Published var petDocuments: [PetDocument] = []
     @Published var gender: GenderOptions?
     @Published var reminders: [Reminder] = []
-    
+
     func clear() {
         name = ""
         birthDate = nil
@@ -32,7 +32,7 @@ class PetCreationViewModel: ObservableObject {
         petDocuments = []
         gender = nil
     }
-    
+
     func savePet(context: ModelContext, petViewModel: PetViewModel) {
         petViewModel.createPet(
             context: context,
@@ -47,7 +47,7 @@ class PetCreationViewModel: ObservableObject {
             petDocuments: petDocuments,
             gender: gender ?? .male
         )
-        
+
         clear()
     }
 }
