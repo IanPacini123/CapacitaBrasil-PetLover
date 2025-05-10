@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct PetIdentifier: View {
-    //essas variaveis nao vao existir quando conectar com o swiftdata
+    
+    var viewModel = PetViewModel.shared
+    
     @State var isEmpty: Bool
     @State var petName: String
     @State var action = {
@@ -17,7 +19,7 @@ struct PetIdentifier: View {
     
     var body: some View {
         VStack {
-            if isEmpty {
+            if PetViewModel.shared.pets.isEmpty {
                 VStack {
                     ZStack {
                         Circle()
@@ -71,8 +73,4 @@ struct PetIdentifier: View {
             }
         }
     }
-}
-
-#Preview {
-    PetIdentifier(isEmpty: true, petName: "fotossíntese")
 }
