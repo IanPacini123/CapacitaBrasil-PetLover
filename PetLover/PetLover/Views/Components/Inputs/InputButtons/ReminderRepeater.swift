@@ -18,9 +18,11 @@ struct ReminderRepeaterList: View {
                     .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
             }
             
-            HStack(spacing: 6) {
-                ForEach(WeekDays.allCases, id: \.self) { dia in
-                    ReminderRepeaterButton(selectedDays: $selectedDays, isActive: $isActive, dia: dia)
+            Grid {
+                GridRow {
+                    ForEach(WeekDays.allCases, id: \.self) { dia in
+                        ReminderRepeaterButton(selectedDays: $selectedDays, isActive: $isActive, dia: dia)
+                    }
                 }
             }
         }
