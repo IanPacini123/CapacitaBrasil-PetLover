@@ -13,7 +13,8 @@ struct PetIdentifier: View {
     
     @State var isEmpty: Bool
     @State var petName: String
-    @State var action = {
+    @State var petImageData: Data?
+    var action = {
         
     }
     
@@ -29,7 +30,7 @@ struct PetIdentifier: View {
                             .frame(width: 142)
                             .foregroundStyle(Color.AppColors.primary20NearWhite)
                             .overlay(
-                                Image("IconPawSpecies")
+                                Image("IconPaw")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 74, height: 74)
@@ -53,12 +54,23 @@ struct PetIdentifier: View {
                         Circle()
                             .frame(width: 142)
                             .foregroundStyle(Color.AppColors.primary20NearWhite)
-                            .overlay(
-                                Image("IconPaw")
-                                    .resizable()
-                                    .scaledToFill()
-                                    .clipShape(Circle())
-                            )
+                           
+                                .overlay(
+                                    Group {
+                                        if let data = petImageData, let uiImage = UIImage(data: data) {
+                                            Image(uiImage: uiImage)
+                                                .resizable()
+                                                .scaledToFill()
+                                                .clipShape(Circle())
+                                        } else {
+                                            Image("IconPaw")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .foregroundStyle(Color.AppColors.primary40LightOrange)
+                                                .frame(width: 74, height: 74)
+                                        }
+                                    }
+                                )
                         
                         Circle()
                             .stroke(Color.AppColors.secondary60BlueishGray, lineWidth: 3)
