@@ -11,8 +11,9 @@ import UniformTypeIdentifiers
 
 struct PetDocumentsView: View {
     @ObservedObject var petCreationViewModel: PetCreationViewModel
-    @ObservedObject var petViewModel = PetViewModel()
     @Binding var path: NavigationPath
+    
+    var petViewModel: PetViewModel
 
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) private var context

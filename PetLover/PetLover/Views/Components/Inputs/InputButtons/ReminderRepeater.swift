@@ -17,15 +17,15 @@ struct ReminderRepeaterList: View {
                 Text("Repetir")
                     .appFontDarkerGrotesque(darkness: .ExtraBold, size: 19)
             }
-            .padding(.horizontal)
             
-            HStack(spacing: 6) {
-                ForEach(WeekDays.allCases, id: \.self) { dia in
-                    ReminderRepeaterButton(selectedDays: $selectedDays, isActive: $isActive, dia: dia)
+            Grid {
+                GridRow {
+                    ForEach(WeekDays.allCases, id: \.self) { dia in
+                        ReminderRepeaterButton(selectedDays: $selectedDays, isActive: $isActive, dia: dia)
+                    }
                 }
             }
         }
-        .padding()
         .onChange(of: isActive) {
             selectedDays.removeAll()
         }
@@ -58,13 +58,18 @@ struct ReminderRepeaterButton: View {
                         .foregroundColor(.AppColors.secondary60BlueishGray)
                 }
         }
-        .frame(width: 44, height: 55)
+//        .frame(width: 44, height: 55)
         .disabled(!isActive)
+        .buttonStyle(.borderless)
     }
 }
 
 
 #Preview {
     @Previewable @State var selectedDays: Set<WeekDays> = []
-    ReminderRepeaterList(selectedDays: $selectedDays)
+    Form {
+        Section {
+            ReminderRepeaterList(selectedDays: $selectedDays)
+        }
+    }
 }

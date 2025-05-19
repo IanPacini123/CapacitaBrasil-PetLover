@@ -11,6 +11,7 @@ import Foundation
 @Model
 class Reminder: Identifiable {
     var id: UUID
+    var petId: UUID
     var title: String
     var date: Date
     var category: ReminderCategory
@@ -20,6 +21,7 @@ class Reminder: Identifiable {
     var isCompleted: Bool
     
     init(
+        petId: UUID,
         title: String,
         date: Date,
         category: ReminderCategory,
@@ -29,6 +31,7 @@ class Reminder: Identifiable {
         isCompleted: Bool = false
     ){
         self.id = UUID()
+        self.petId = petId
         self.title = title
         self.date = date
         self.category = category
