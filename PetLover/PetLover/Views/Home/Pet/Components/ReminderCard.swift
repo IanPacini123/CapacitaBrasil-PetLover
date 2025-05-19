@@ -87,7 +87,7 @@ private struct categoryTag: View {
 #Preview {
     ReminderCard(
         reminder: Reminder(
-            title: "Vacina Raiva",
+            petId: UUID(), title: "Vacina Raiva",
             date: Date(),
             category: .saude,
             repeatDays: [.domingo, .quarta],
