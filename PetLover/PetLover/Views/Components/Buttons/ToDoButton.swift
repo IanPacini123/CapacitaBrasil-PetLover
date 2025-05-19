@@ -25,18 +25,21 @@ struct ToDoButton: View {
                 RoundedRectangle(cornerRadius: 4)
                     .fill( Color.AppColors.helperSuccessGreen)
                     .overlay {
-                        RoundedRectangle(cornerRadius: 4)
-                            .stroke(lineWidth: 1)
-                            .foregroundStyle( Color.AppColors.secondary60BlueishGray)
-                        Image(systemName: "checkmark")
-                            .resizable()
-                            .scaledToFit()
-                            .foregroundStyle(Color.AppColors.primary20NearWhite)
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 4)
+                                .stroke(lineWidth: 1)
+                                .foregroundStyle( Color.accent)
+                            Image("IconCheck")
+                                .resizable()
+                                .scaledToFit()
+                                .foregroundStyle(Color.AppColors.primary20NearWhite)
+                                .padding(5)
+                        }
                     }
             } else {
                 RoundedRectangle(cornerRadius: 4)
                     .stroke(lineWidth: 1)
-                    .foregroundStyle( Color.AppColors.secondary60BlueishGray)
+                    .foregroundStyle(Color.accent)
             }
         }
         

@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct AddReminderSheet: View {
-    @StateObject private var petViewModel = PetViewModel()
-    @StateObject private var reminderViewModel = ReminderViewModel()
+    var petViewModel = PetViewModel.shared
+    var reminderViewModel = ReminderViewModel.shared
     @Environment(\.modelContext) private var context
     
     @State var selectedpet: Pet? = nil {
