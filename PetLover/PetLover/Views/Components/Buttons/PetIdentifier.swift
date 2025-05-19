@@ -8,13 +8,19 @@
 import SwiftUI
 
 struct PetIdentifier: View {
-    //essas variaveis nao vao existir quando conectar com o swiftdata
+    
+    var viewModel = PetViewModel.shared
+    
     @State var isEmpty: Bool
     @State var petName: String
+    @State var petImageData: Data?
+    var action = {
+        
+    }
     
     var body: some View {
         VStack {
-            if isEmpty {
+            if PetViewModel.shared.pets.isEmpty {
                 VStack {
                     ZStack {
                         Circle()
@@ -24,7 +30,7 @@ struct PetIdentifier: View {
                             .frame(width: 142)
                             .foregroundStyle(Color.AppColors.primary20NearWhite)
                             .overlay(
-                                Image("IconPawSpecies")
+                                Image("IconPaw")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 74, height: 74)
@@ -34,7 +40,7 @@ struct PetIdentifier: View {
                     .padding(.bottom, 9)
                     
                     LargeButton(label: "Adicionar Pet") {
-                        print("Pet adicionado")
+                        action()
                     }
                     .frame(width: 149, height: 44)
                 }
@@ -48,12 +54,23 @@ struct PetIdentifier: View {
                         Circle()
                             .frame(width: 142)
                             .foregroundStyle(Color.AppColors.primary20NearWhite)
-                            .overlay(
-                                Image("IconPaw")
-                                    .resizable()
-                                    .scaledToFill()
-                                    .clipShape(Circle())
-                            )
+                           
+                                .overlay(
+                                    Group {
+                                        if let data = petImageData, let uiImage = UIImage(data: data) {
+                                            Image(uiImage: uiImage)
+                                                .resizable()
+                                                .scaledToFill()
+                                                .clipShape(Circle())
+                                        } else {
+                                            Image("IconPaw")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .foregroundStyle(Color.AppColors.primary40LightOrange)
+                                                .frame(width: 74, height: 74)
+                                        }
+                                    }
+                                )
                         
                         Circle()
                             .stroke(Color.AppColors.secondary60BlueishGray, lineWidth: 3)
@@ -68,8 +85,4 @@ struct PetIdentifier: View {
             }
         }
     }
-}
-
-#Preview {
-    PetIdentifier(isEmpty: true, petName: "fotossíntese")
 }

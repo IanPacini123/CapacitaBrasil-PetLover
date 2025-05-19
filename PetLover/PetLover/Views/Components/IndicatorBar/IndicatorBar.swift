@@ -15,7 +15,7 @@ struct IndicatorBar: View {
         HStack {
             ForEach(0..<numberOfPages, id: \.self) { index in
                 Circle()
-                    .frame(width: 9, height: 9)
+                    .frame(width: currentPage == index ? 18 : 9, height: 9)
                     .foregroundColor(currentPage == index ? Color.AppColors.primary50Orange : .white)
                     .scaleEffect(currentPage == index ? 1.2 : 1.0)
                     .animation(.easeInOut, value: currentPage)
