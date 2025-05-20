@@ -25,9 +25,9 @@ struct PetIdentifier: View {
                     ZStack {
                         Circle()
                             .stroke(Color.AppColors.primary40LightOrange, lineWidth: 6)
-                            .frame(width: 142)
+//                            .frame(width: 142)
                         Circle()
-                            .frame(width: 142)
+//                            .frame(width: 142)
                             .foregroundStyle(Color.AppColors.primary20NearWhite)
                             .overlay(
                                 Image("IconPaw")
@@ -49,10 +49,10 @@ struct PetIdentifier: View {
                     ZStack {
                         Circle()
                             .stroke(Color.AppColors.primary40LightOrange, lineWidth: 9)
-                            .frame(width: 142)
+//                            .frame(width: 142)
                         
                         Circle()
-                            .frame(width: 142)
+//                            .frame(width: 142)
                             .foregroundStyle(Color.AppColors.primary20NearWhite)
                            
                                 .overlay(
@@ -74,7 +74,7 @@ struct PetIdentifier: View {
                         
                         Circle()
                             .stroke(Color.AppColors.secondary60BlueishGray, lineWidth: 3)
-                            .frame(width: 142)
+//                            .frame(width: 142)
                     }
                     .padding(.bottom, 9)
                     
