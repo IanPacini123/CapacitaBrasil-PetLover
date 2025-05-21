@@ -12,7 +12,6 @@ struct PetHomeView: View {
     var viewModel = PetViewModel.shared
     
     @State private var selectedDate: Date = Date()
-    
     @State var currentPet: Pet?
     @State private var selectedReminder: Reminder?
     @State private var selectedPetIndex = 0
@@ -38,11 +37,7 @@ struct PetHomeView: View {
                     HStack {
                         if !(PetViewModel.shared.pets.isEmpty) {
                             Button(action: {
-                                if selectedPetIndex > 0 {
-                                    selectedPetIndex -= 1
-                                    currentPet = PetViewModel.shared.pets[selectedPetIndex]
-                                }
-                                print(selectedPetIndex)
+                                previousPetIndex()
                             }, label: {
                                 Image("IconChevronRight")
                                     .rotationEffect(Angle(degrees: 180))
@@ -50,30 +45,21 @@ struct PetHomeView: View {
                             })
                         }
                         
-                        Spacer()
-                        
                         VStack(spacing: 2) {
                             PetIdentifier(isEmpty: PetViewModel.shared.pets.isEmpty, petName: currentPet?.name ?? "", petImageData: currentPet?.photo, action: {
                                 path.append(Destination.petBasicInfo)
                             })
                             .id(currentPet)
-                            .frame(maxWidth: geometry.size.width * 0.35)
+                            .padding(.horizontal, 100)
                             
                             if !(PetViewModel.shared.pets.isEmpty) {
                                 IndicatorBar(numberOfPages: PetViewModel.shared.pets.count, currentPage: $selectedPetIndex)
                             }
                         }
                         
-                        Spacer()
-                        
                         if !(PetViewModel.shared.pets.isEmpty) {
                             Button(action: {
-                                print(selectedPetIndex)
-                                if selectedPetIndex < PetViewModel.shared.pets.count - 1 {
-                                    selectedPetIndex += 1
-                                    currentPet = PetViewModel.shared.pets[selectedPetIndex]
-                                }
-                                
+                                nextPetIndex()
                             }, label: {
                                 Image("IconChevronRight")
                                     .foregroundStyle((selectedPetIndex + 1) == PetViewModel.shared.pets.count ? Color.AppColors.nearNeutralGrayGray : Color.AppColors.secondary60BlueishGray)
@@ -108,22 +94,7 @@ struct PetHomeView: View {
                                     Button(action: {
                                         showAddReminderSheet = true
                                     }, label: {
-                                        HStack(spacing: 0) {
-                                            VStack(alignment: .leading) {
-                                                Text("Nenhum lembrete por hoje!")
-                                                    .appFontDarkerGrotesque(darkness: .Bold, size: 18)
-                                                Text("Adicione um para começar.")
-                                                    .appFontDarkerGrotesque(darkness: .Medium, size: 18)
-                                            }
-                                            Spacer()
-                                            
-                                            Image(systemName: "plus")
-                                        }
-                                        .padding(.horizontal)
-                                        .foregroundStyle(Color.AppColors.secondary60BlueishGray)
-                                        .frame(height: 95)
-                                        .background(Color.AppColors.primary30Beige)
-                                        .cornerRadius(10)
+                                        EmptyStateNoReminders()
                                         .padding(.horizontal)
                                     })
                                 } else {
@@ -147,23 +118,7 @@ struct PetHomeView: View {
                             Button(action: {
                                 path.append(Destination.petBasicInfo)
                             }, label: {
-                                HStack(spacing: 0) {
-                                    VStack(alignment: .leading) {
-                                        Text("Nenhum lembrete por aqui!")
-                                            .appFontDarkerGrotesque(darkness: .Bold, size: 18)
-                                        Text("Adicione seu pet para começar.")
-                                            .appFontDarkerGrotesque(darkness: .Medium, size: 18)
-                                    }
-                                    
-                                    Spacer()
-                                    
-                                    Image(systemName: "plus")
-                                }
-                                .padding(.horizontal)
-                                .foregroundStyle(Color.AppColors.secondary60BlueishGray)
-                                .frame(height: 95)
-                                .background(Color.AppColors.primary30Beige)
-                                .cornerRadius(10)
+                                EmptyStateNoPets()
                                 .padding(.horizontal)
                             })
                         }
@@ -199,9 +154,23 @@ struct PetHomeView: View {
 
     }
     
-    func isSameDay(_ date1: Date, _ date2: Date) -> Bool {
+    private func isSameDay(_ date1: Date, _ date2: Date) -> Bool {
         let calendar = Calendar.current
         return calendar.isDate(date1, inSameDayAs: date2)
+    }
+    
+    private func previousPetIndex() {
+        if selectedPetIndex > 0 {
+            selectedPetIndex -= 1
+            currentPet = PetViewModel.shared.pets[selectedPetIndex]
+        }
+    }
+    
+    private func nextPetIndex() {
+        if selectedPetIndex < PetViewModel.shared.pets.count - 1 {
+            selectedPetIndex += 1
+            currentPet = PetViewModel.shared.pets[selectedPetIndex]
+        }
     }
     
 }
@@ -229,4 +198,46 @@ struct RoundedCorner: Shape {
     }
 }
 
+struct EmptyStateNoPets: View {
+    var body: some View {
+        HStack(spacing: 0) {
+            VStack(alignment: .leading) {
+                Text("Nenhum lembrete por aqui!")
+                    .appFontDarkerGrotesque(darkness: .Bold, size: 18)
+                Text("Adicione seu pet para começar.")
+                    .appFontDarkerGrotesque(darkness: .Medium, size: 18)
+            }
+            
+            Spacer()
+            
+            Image(systemName: "plus")
+        }
+        .padding(.horizontal)
+        .foregroundStyle(Color.AppColors.secondary60BlueishGray)
+        .frame(height: 95)
+        .background(Color.AppColors.primary30Beige)
+        .cornerRadius(10)
+    }
+}
 
+struct EmptyStateNoReminders: View {
+    var body: some View {
+        HStack(spacing: 0) {
+            VStack(alignment: .leading) {
+                Text("Nenhum lembrete por aqui!")
+                    .appFontDarkerGrotesque(darkness: .Bold, size: 18)
+                Text("Adicione seu pet para começar.")
+                    .appFontDarkerGrotesque(darkness: .Medium, size: 18)
+            }
+            
+            Spacer()
+            
+            Image(systemName: "plus")
+        }
+        .padding(.horizontal)
+        .foregroundStyle(Color.AppColors.secondary60BlueishGray)
+        .frame(height: 95)
+        .background(Color.AppColors.primary30Beige)
+        .cornerRadius(10)
+    }
+}

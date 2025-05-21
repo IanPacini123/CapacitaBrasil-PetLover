@@ -25,6 +25,7 @@ struct PetBasicInfoView: View {
                 
                 VStack(alignment: .leading, spacing: 24) {
                     SinglelineTextField(text: $petCreationViewModel.name, buttonPressed: $buttonPressed, isOptional: false, label: "Insira o nome do seu animalzinho", fieldTitle: "Nome do pet")
+                        .padding(.horizontal)
                     
                         SeletorInput(vazio: petCreationViewModel.birthDate != nil ? false : true, buttonPressed: $buttonPressed, isOptional: false, label: petCreationViewModel.birthDate != nil ? formattedDate(petCreationViewModel.birthDate!) : "Selecione qual a data de nascimento", action: {
                             showDatePicker = true
@@ -53,6 +54,7 @@ struct PetBasicInfoView: View {
                     .padding(.leading)
                     
                     SinglelineTextField(text: $petCreationViewModel.breed, buttonPressed: $buttonPressed, isOptional: true, label: "Qual a raça do seu pet?", fieldTitle: "Raça")
+                        .padding(.horizontal)
                 }
             }
             .padding(.top, 40)

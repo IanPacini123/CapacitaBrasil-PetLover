@@ -44,6 +44,7 @@ Clique no card para selecionar o arquivo
 """, totalPages: 4, currentPage: 4)
                     
                     SinglelineTextField(text: $tempTitle, buttonPressed: $buttonPressed, isOptional: true, label: "Qual o título desse documento?", fieldTitle: "Título")
+                        .padding(.horizontal)
                     
                     
                     if petCreationViewModel.petDocuments.isEmpty {
