@@ -90,7 +90,7 @@ struct PetMedicalConditionsView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    path.append(PetFlowDestination.petDocuments)
+                    path.append(Destination.petDocuments)
                 } label: {
                     Text("Avançar")
                         .appFontDarkerGrotesque(darkness: .SemiBold, size: 17)

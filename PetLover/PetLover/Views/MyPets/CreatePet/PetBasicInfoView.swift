@@ -154,7 +154,7 @@ struct PetBasicInfoView: View {
                         buttonPressed = true
                     } else {
                         buttonPressed = false
-                        path.append(PetFlowDestination.petProfile)
+                        path.append(Destination.petProfile)
                     }
                 }) {
                    Text("Avançar")
@@ -181,7 +181,7 @@ private struct FluxoAdicionarPet: View {
         NavigationStack(path: $path) {
                 VStack {
                     Button(action: {
-                        path.append(PetFlowDestination.petBasicInfo)
+                        path.append(Destination.petBasicInfo)
                     }) {
                         Text("Adicionar Pet")
                             .font(.title)
@@ -190,7 +190,7 @@ private struct FluxoAdicionarPet: View {
                     }
                     
                     Button(action: {
-                        path.append(PetFlowDestination.reminders)
+//                        path.append(Destination.reminderForms)
                     }) {
                         Text("Adicionar lembrete")
                             .font(.title)
@@ -229,7 +229,7 @@ private struct FluxoAdicionarPet: View {
                         }
                     }
                 }
-                .navigationDestination(for: PetFlowDestination.self) { destination in
+                .navigationDestination(for: Destination.self) { destination in
                     switch destination {
                     case .petDocuments:
                         PetDocumentsView(petCreationViewModel: petCreationViewModel, path: $path)
@@ -240,8 +240,6 @@ private struct FluxoAdicionarPet: View {
                     case .petBasicInfo:
                         PetBasicInfoView(petCreationViewModel: petCreationViewModel, path: $path
                         )
-                    case .reminders:
-                        ReminderView()
                     }
                 }
         }

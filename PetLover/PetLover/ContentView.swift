@@ -7,12 +7,11 @@
 
 import SwiftUI
 
-enum PetFlowDestination: Hashable {
+enum Destination: Hashable {
     case petDocuments
     case petMedicalConditions
     case petProfile
     case petBasicInfo
-    case reminders
 }
 
 struct ContentView: View {
@@ -37,7 +36,7 @@ struct ContentView: View {
                         Label("Ajustes", image: "IconGear")
                     }
             }
-            .navigationDestination(for: PetFlowDestination.self) { destination in
+            .navigationDestination(for: Destination.self) { destination in
                 switch destination {
                 case .petDocuments:
                     PetDocumentsView(petCreationViewModel: petCreationViewModel, path: $path)
@@ -47,8 +46,6 @@ struct ContentView: View {
                     PetProfileView(petCreationViewModel: petCreationViewModel, path: $path)
                 case .petBasicInfo:
                     PetBasicInfoView(petCreationViewModel: petCreationViewModel, path: $path)
-                case .reminders:
-                    ReminderView()
                 }
             }
         }

@@ -10,6 +10,7 @@ import SwiftData
 
 struct ModalLembrete: View {
     @Environment(\.dismiss) private var dismiss
+    @Binding var path: NavigationPath
 
     var context: ModelContext
     var reminderViewModel: ReminderViewModel
@@ -114,7 +115,7 @@ struct ModalLembrete: View {
             if isMenuVisible {
                 VStack(alignment: .leading, spacing: 8) {
                     Button(action: {
-                        // fazer ele ir pra tela de adicionar lembrete
+                        dismiss()
                         isMenuVisible = false
                     }, label: {
                         Text("Editar")
@@ -128,6 +129,7 @@ struct ModalLembrete: View {
                     Button(action: {
                         reminderViewModel.deleteReminder(context: context, pet: pet, reminder: reminder)
                         isMenuVisible = false
+                        dismiss()
                     }, label: {
                         Text("Excluir")
                             .appFontDarkerGrotesque(darkness: .Bold, size: 17)
