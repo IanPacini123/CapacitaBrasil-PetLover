@@ -73,7 +73,7 @@ struct PetProfileView: View {
                 
                 LargeButton(label: "Pular", type: .secondary, action: {
                     petCreationViewModel.photo = nil
-                    path.append(PetFlowDestination.petMedicalConditions)
+                    path.append(Destination.petMedicalConditions)
                 })
                 .padding(.horizontal)
                 .frame(height: 44)
@@ -101,7 +101,7 @@ struct PetProfileView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-               path.append(PetFlowDestination.petMedicalConditions)
+               path.append(Destination.petMedicalConditions)
                 }) {
                    Text("Avançar")
                         .appFontDarkerGrotesque(darkness: .SemiBold, size: 17)

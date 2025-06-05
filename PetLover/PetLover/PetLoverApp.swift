@@ -14,6 +14,7 @@ struct PetLoverApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: [Pet.self, Reminder.self, PetDocument.self])
     }
 }
 

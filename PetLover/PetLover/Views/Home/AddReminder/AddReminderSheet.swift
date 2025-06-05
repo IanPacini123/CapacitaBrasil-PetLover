@@ -187,6 +187,7 @@ struct AddReminderSheet: View {
                                                      date: date,
                                                      category: category,
                                                      startTime: startTime)
+                    isShowing = false
                 } catch {
                     checkFields()
                 }

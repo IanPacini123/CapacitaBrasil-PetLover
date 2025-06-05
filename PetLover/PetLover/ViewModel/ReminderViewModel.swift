@@ -83,7 +83,7 @@ class ReminderViewModel {
     }
 }
 
-struct ReminderView: View {
+private struct ReminderView: View {
     @Environment(\.modelContext) private var context
     private var viewModel = ReminderViewModel.shared
     private var petViewModel = PetViewModel.shared

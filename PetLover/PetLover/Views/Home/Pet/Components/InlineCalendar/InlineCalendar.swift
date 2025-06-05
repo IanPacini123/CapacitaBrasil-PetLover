@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct InlineCalendar: View {
-    @State var selectedDate = Date.now
+    @Binding var selectedDate: Date
 
     private var dates: [Date] {
             let calendar = Calendar.current
@@ -42,10 +42,6 @@ struct InlineCalendar: View {
             }
         }
     }
-}
-
-#Preview {
-    InlineCalendar()
 }
 
 private struct DateSequence: Sequence, IteratorProtocol {

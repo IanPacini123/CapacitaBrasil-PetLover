@@ -13,7 +13,7 @@ struct PetDocumentsView: View {
     @ObservedObject var petCreationViewModel: PetCreationViewModel
     @Binding var path: NavigationPath
     
-    var petViewModel: PetViewModel
+    private var viewModel = PetViewModel.shared
 
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) private var context
@@ -27,6 +27,11 @@ struct PetDocumentsView: View {
         !(petCreationViewModel.petDocuments.count >= 2 ||
           (petCreationViewModel.petDocuments.count >= 1 && tempURL != nil))
     }
+    
+    init(petCreationViewModel: PetCreationViewModel, path: Binding<NavigationPath>) {
+        self.petCreationViewModel = petCreationViewModel
+        self._path = path
+    }
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -39,6 +44,7 @@ Clique no card para selecionar o arquivo
 """, totalPages: 4, currentPage: 4)
                     
                     SinglelineTextField(text: $tempTitle, buttonPressed: $buttonPressed, isOptional: true, label: "Qual o título desse documento?", fieldTitle: "Título")
+                        .padding(.horizontal)
                     
                     
                     if petCreationViewModel.petDocuments.isEmpty {
@@ -133,7 +139,7 @@ Clique no card para selecionar o arquivo
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    petViewModel.createPet(context: context,
+                    PetViewModel.shared.createPet(context: context,
                                            name: petCreationViewModel.name,
                                            birthDate: petCreationViewModel.birthDate ?? Date(),
                                            specie: petCreationViewModel.specie ?? .dog,
