@@ -50,6 +50,12 @@ class Pet: Identifiable {
         self.gender = gender
         self.reminders = reminders
     }
+    
+    var petAge: Int {
+        let calendar = Calendar.current
+        let ageComponents = calendar.dateComponents([.year], from: self.birthDate, to: .now)
+        return ageComponents.year ?? 0
+    }
 }
 
 enum CastrationStatus: String, Codable, CaseIterable, Identifiable {
