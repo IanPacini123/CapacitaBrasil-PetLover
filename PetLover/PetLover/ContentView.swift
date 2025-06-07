@@ -28,12 +28,13 @@ struct ContentView: View {
                 
                 // TODO: Substituir essas pethomeview pelas views certas
                 
-                PetHomeView(path: $path)
+                PetList()
                     .tabItem {
                         Label("Pets", image: "IconPaw")
                     }
+
                 
-                PetHomeView(path: $path)
+                ConfigView()
                     .tabItem {
                         Label("Ajustes", image: "IconGear")
                     }
