@@ -7,18 +7,19 @@
 import Foundation
 import SwiftData
 
+@Observable
 class PetCreationViewModel: ObservableObject {
-    @Published var name: String = ""
-    @Published var birthDate: Date?
-    @Published var specie: SpeciesOptions?
-    @Published var breed: String = ""
-    @Published var photo: Data?
-    @Published var castrationStatus: CastrationStatus?
-    @Published var weight: Double = 0.0
-    @Published var infos: String = ""
-    @Published var petDocuments: [PetDocument] = []
-    @Published var gender: GenderOptions?
-    @Published var reminders: [Reminder] = []
+    var name: String = ""
+    var birthDate: Date?
+    var specie: SpeciesOptions?
+    var breed: String = ""
+    var photo: Data?
+    var castrationStatus: CastrationStatus?
+    var weight: Double = 0.0
+    var infos: String = ""
+    var petDocuments: [PetDocument] = []
+    var gender: GenderOptions?
+    var reminders: [Reminder] = []
 
     func clear() {
         name = ""

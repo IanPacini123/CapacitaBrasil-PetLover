@@ -16,22 +16,24 @@ struct PetList: View {
     @State var selectedPet: Pet? = nil
     
     var body: some View {
-        ScrollView {
-            ScrollViewReader { proxy in
-                ForEach(petList) { pet in
-                    if !(pet != selectedPet && hasSelection) {
-                        PetListCard(pet: pet) {
-                            proxy.scrollTo(pet.id, anchor: .top)
-                            hasSelection.toggle()
-                            self.selectedPet = pet
+        NavigationStack {
+            ScrollView {
+                ScrollViewReader { proxy in
+                    ForEach(petList) { pet in
+                        if !(pet != selectedPet && hasSelection) {
+                            PetListCard(pet: pet) {
+                                proxy.scrollTo(pet.id, anchor: .top)
+                                hasSelection.toggle()
+                                self.selectedPet = pet
+                            }
+                            .id(pet.id)
                         }
-                        .id(pet.id)
                     }
                 }
             }
-        }
-        .onAppear {
-            PetViewModel.shared.fetchPets(context: context)
+            .onAppear {
+                PetViewModel.shared.fetchPets(context: context)
+            }
         }
     }
 }

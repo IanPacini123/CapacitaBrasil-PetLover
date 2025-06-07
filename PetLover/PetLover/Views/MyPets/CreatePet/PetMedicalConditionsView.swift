@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct PetMedicalConditionsView: View {
-    @ObservedObject var petCreationViewModel: PetCreationViewModel
+    @Binding var petCreationViewModel: PetCreationViewModel
     
     @Environment(\.dismiss) var dismiss
-    
     @Binding var path: NavigationPath
     
     @State private var isWeightPickerPresented = false

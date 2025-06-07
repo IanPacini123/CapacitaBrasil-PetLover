@@ -7,8 +7,10 @@
 import SwiftUI
 
 struct PetHomeView: View {
-    @Binding var path: NavigationPath
     @Environment(\.modelContext) private var context
+    @State var path = NavigationPath()
+    
+    @State var petCreationViewModel = PetCreationViewModel()
     var viewModel = PetViewModel.shared
     
     @State private var selectedDate: Date = Date()
@@ -20,82 +22,83 @@ struct PetHomeView: View {
     @State private var showReminderSheet: Bool = false
     
     var body: some View {
-        ZStack(alignment: .top) {
-            GeometryReader { geometry in
-                Color.AppColors.nearNeutralLightLightGray.ignoresSafeArea()
-                
-                RoundedCorner()
-                    .fill(Color.white)
-                    .frame(maxHeight: geometry.size.width * 0.9)
-                    .ignoresSafeArea(.all)
-                
-                VStack {
-                    Text("Love My Pet")
-                        .appFontDarkerGrotesque(darkness: .Black, size: 32)
-                        .foregroundStyle(Color.AppColors.secondary60BlueishGray)
+        NavigationStack(path: $path) {
+            ZStack(alignment: .top) {
+                GeometryReader { geometry in
+                    Color.AppColors.nearNeutralLightLightGray.ignoresSafeArea()
                     
-                    HStack {
-                        if !(PetViewModel.shared.pets.isEmpty) {
-                            Button(action: {
-                                previousPetIndex()
-                            }, label: {
-                                Image("IconChevronRight")
-                                    .rotationEffect(Angle(degrees: 180))
-                                    .foregroundStyle(selectedPetIndex == 0 ? Color.AppColors.nearNeutralGrayGray : Color.AppColors.secondary60BlueishGray)
-                            })
-                        }
+                    RoundedCorner()
+                        .fill(Color.white)
+                        .frame(maxHeight: geometry.size.width * 0.9)
+                        .ignoresSafeArea(.all)
+                    
+                    VStack {
+                        Text("Love My Pet")
+                            .appFontDarkerGrotesque(darkness: .Black, size: 32)
+                            .foregroundStyle(Color.AppColors.secondary60BlueishGray)
                         
-                        VStack(spacing: 2) {
-                            PetIdentifier(isEmpty: PetViewModel.shared.pets.isEmpty, petName: currentPet?.name ?? "", petImageData: currentPet?.photo, action: {
-                                path.append(Destination.petBasicInfo)
-                            })
-                            .id(currentPet)
-                            .padding(.horizontal, 100)
+                        HStack {
+                            if !(PetViewModel.shared.pets.isEmpty) {
+                                Button(action: {
+                                    previousPetIndex()
+                                }, label: {
+                                    Image("IconChevronRight")
+                                        .rotationEffect(Angle(degrees: 180))
+                                        .foregroundStyle(selectedPetIndex == 0 ? Color.AppColors.nearNeutralGrayGray : Color.AppColors.secondary60BlueishGray)
+                                })
+                            }
+                            
+                            VStack(spacing: 2) {
+                                PetIdentifier(isEmpty: PetViewModel.shared.pets.isEmpty, petName: currentPet?.name ?? "", petImageData: currentPet?.photo, action: {
+                                    path.append(Destination.petBasicInfo)
+                                })
+                                .id(currentPet)
+                                .padding(.horizontal, 100)
+                                
+                                if !(PetViewModel.shared.pets.isEmpty) {
+                                    IndicatorBar(numberOfPages: PetViewModel.shared.pets.count, currentPage: $selectedPetIndex)
+                                }
+                            }
                             
                             if !(PetViewModel.shared.pets.isEmpty) {
-                                IndicatorBar(numberOfPages: PetViewModel.shared.pets.count, currentPage: $selectedPetIndex)
+                                Button(action: {
+                                    nextPetIndex()
+                                }, label: {
+                                    Image("IconChevronRight")
+                                        .foregroundStyle((selectedPetIndex + 1) == PetViewModel.shared.pets.count ? Color.AppColors.nearNeutralGrayGray : Color.AppColors.secondary60BlueishGray)
+                                    
+                                })
                             }
                         }
-                        
-                        if !(PetViewModel.shared.pets.isEmpty) {
-                            Button(action: {
-                                nextPetIndex()
-                            }, label: {
-                                Image("IconChevronRight")
-                                    .foregroundStyle((selectedPetIndex + 1) == PetViewModel.shared.pets.count ? Color.AppColors.nearNeutralGrayGray : Color.AppColors.secondary60BlueishGray)
-                                
-                            })
-                        }
-                    }
-                    .padding(.horizontal)
-                    
-                    InlineCalendar(selectedDate: $selectedDate)
                         .padding(.horizontal)
-                    
-                    VStack(spacing: 8) {
-                        HStack {
-                            Text("Lembretes")
-                                .appFontDarkerGrotesque(darkness: .Black, size: 28)
-                            Spacer()
-                            Button(action: {
-                                showAddReminderSheet = true
-                            }, label: {
-                                Image("IconPlus")
-                            })
-                        }
-                        .padding(.horizontal)
-                        .foregroundStyle(Color.AppColors.secondary60BlueishGray)
                         
-                        if !viewModel.pets.isEmpty && selectedPetIndex < viewModel.pets.count {
-                            let remindersForToday = viewModel.pets[selectedPetIndex].reminders.filter {
-                                isSameDay($0.date, selectedDate)
+                        InlineCalendar(selectedDate: $selectedDate)
+                            .padding(.horizontal)
+                        
+                        VStack(spacing: 8) {
+                            HStack {
+                                Text("Lembretes")
+                                    .appFontDarkerGrotesque(darkness: .Black, size: 28)
+                                Spacer()
+                                Button(action: {
+                                    showAddReminderSheet = true
+                                }, label: {
+                                    Image("IconPlus")
+                                })
                             }
+                            .padding(.horizontal)
+                            .foregroundStyle(Color.AppColors.secondary60BlueishGray)
+                            
+                            if !viewModel.pets.isEmpty && selectedPetIndex < viewModel.pets.count {
+                                let remindersForToday = viewModel.pets[selectedPetIndex].reminders.filter {
+                                    isSameDay($0.date, selectedDate)
+                                }
                                 if remindersForToday.isEmpty {
                                     Button(action: {
                                         showAddReminderSheet = true
                                     }, label: {
                                         EmptyStateNoReminders()
-                                        .padding(.horizontal)
+                                            .padding(.horizontal)
                                     })
                                 } else {
                                     ScrollView(.vertical, showsIndicators: true) {
@@ -104,7 +107,7 @@ struct PetHomeView: View {
                                                 Button(action: {
                                                     selectedReminder = reminder
                                                     showReminderSheet = true
-                                                       
+                                                    
                                                 }, label: {
                                                     ReminderCard(reminder: reminder)
                                                 })
@@ -114,44 +117,56 @@ struct PetHomeView: View {
                                         .padding(.horizontal)
                                     }
                                 }
-                        } else {
-                            Button(action: {
-                                path.append(Destination.petBasicInfo)
-                            }, label: {
-                                EmptyStateNoPets()
-                                .padding(.horizontal)
-                            })
+                            } else {
+                                Button(action: {
+                                    path.append(Destination.petBasicInfo)
+                                }, label: {
+                                    EmptyStateNoPets()
+                                        .padding(.horizontal)
+                                })
+                            }
+                            
                         }
-                        
                     }
                 }
             }
-        }
-        .onAppear {
-            PetViewModel.shared.fetchPets(context: context)
-            
-            if !PetViewModel.shared.pets.isEmpty {
-                currentPet = PetViewModel.shared.pets[selectedPetIndex]
+            .onAppear {
+                PetViewModel.shared.fetchPets(context: context)
+                
+                if !PetViewModel.shared.pets.isEmpty {
+                    currentPet = PetViewModel.shared.pets[selectedPetIndex]
+                }
+            }
+            .sheet(isPresented: $showAddReminderSheet) {
+                AddReminderSheet(isShowing: $showAddReminderSheet)
+            }
+            .sheet(item: $selectedReminder) { reminder in
+                if let pet = currentPet {
+                    ModalLembrete(
+                        path: $path,
+                        context: context,
+                        reminderViewModel: ReminderViewModel.shared,
+                        pet: pet,
+                        reminder: reminder
+                    )
+                    .presentationDetents([.fraction(0.6)])
+                } else {
+                    Text("Pet não encontrado")
+                }
+            }
+            .navigationDestination(for: Destination.self) { destination in
+                switch destination {
+                case .petDocuments:
+                    PetDocumentsView(petCreationViewModel: $petCreationViewModel, path: $path)
+                case .petMedicalConditions:
+                    PetMedicalConditionsView(petCreationViewModel: $petCreationViewModel, path: $path)
+                case .petProfile:
+                    PetProfileView(petCreationViewModel: $petCreationViewModel, path: $path)
+                case .petBasicInfo:
+                    PetBasicInfoView(petCreationViewModel: $petCreationViewModel, path: $path)
+                }
             }
         }
-        .sheet(isPresented: $showAddReminderSheet) {
-            AddReminderSheet(isShowing: $showAddReminderSheet)
-        }
-        .sheet(item: $selectedReminder) { reminder in
-            if let pet = currentPet {
-                ModalLembrete(
-                    path: $path,
-                    context: context,
-                    reminderViewModel: ReminderViewModel.shared,
-                    pet: pet,
-                    reminder: reminder
-                )
-                .presentationDetents([.fraction(0.6)])
-            } else {
-                Text("Pet não encontrado")
-            }
-        }
-
     }
     
     private func isSameDay(_ date1: Date, _ date2: Date) -> Bool {

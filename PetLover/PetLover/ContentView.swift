@@ -15,42 +15,25 @@ enum Destination: Hashable {
 }
 
 struct ContentView: View {
-    @State var path = NavigationPath()
-    @StateObject var petCreationViewModel = PetCreationViewModel()
-    
     var body: some View {
-        NavigationStack(path: $path) {
-            TabView {
-                PetHomeView(path: $path)
-                    .tabItem {
-                        Label("Início", systemImage: "house")
-                    }
-                
-                // TODO: Substituir essas pethomeview pelas views certas
-                
-                PetList()
-                    .tabItem {
-                        Label("Pets", image: "IconPaw")
-                    }
-
-                
-                ConfigView()
-                    .tabItem {
-                        Label("Ajustes", image: "IconGear")
-                    }
-            }
-            .navigationDestination(for: Destination.self) { destination in
-                switch destination {
-                case .petDocuments:
-                    PetDocumentsView(petCreationViewModel: petCreationViewModel, path: $path)
-                case .petMedicalConditions:
-                    PetMedicalConditionsView(petCreationViewModel: petCreationViewModel, path: $path)
-                case .petProfile:
-                    PetProfileView(petCreationViewModel: petCreationViewModel, path: $path)
-                case .petBasicInfo:
-                    PetBasicInfoView(petCreationViewModel: petCreationViewModel, path: $path)
+        TabView {
+            PetHomeView()
+                .tabItem {
+                    Label("Início", systemImage: "house")
                 }
-            }
+            
+            // TODO: Substituir essas pethomeview pelas views certas
+            
+            PetList()
+                .tabItem {
+                    Label("Pets", image: "IconPaw")
+                }
+            
+            
+            ConfigView()
+                .tabItem {
+                    Label("Ajustes", image: "IconGear")
+                }
         }
     }
 }
