@@ -13,6 +13,7 @@ struct PetLoverApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .preferredColorScheme(.light)
         }
         .modelContainer(for: [Pet.self, Reminder.self, PetDocument.self])
     }
