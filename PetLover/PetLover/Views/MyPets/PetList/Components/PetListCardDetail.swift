@@ -44,101 +44,106 @@ struct PetListCardDetail: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            HStack {
-                Text("Nasc:")
-                    .appFontDarkerGrotesque(darkness: .Black, size: 22)
-                Text(pet.birthDate.formatted(date: .numeric, time: .omitted))
-                    .appFontDarkerGrotesque(darkness: .SemiBold, size: 22)
-                Spacer()
-                Text("\(pet.petAge) ANOS")
-            }
-            .padding(.top, 20)
-            
-            HStack {
-                Text("Raça: ")
-                    .appFontDarkerGrotesque(darkness: .Black, size: 22)
-                Text(pet.breed)
-            }
-            
-            HStack {
-                Text("Genero: ")
-                    .appFontDarkerGrotesque(darkness: .Black, size: 22)
-                Text(petGender)
-            }
-            
-            Divider()
-            
-            HStack {
-                Text("Castração: ")
-                    .appFontDarkerGrotesque(darkness: .Black, size: 22)
-                Text(petCastrationStatus)
-            }
-            
-            HStack {
-                Text("Peso: ")
-                    .appFontDarkerGrotesque(darkness: .Black, size: 22)
-                Text("\(numberFormatter.string(from: pet.weight as NSNumber) ?? "0.0") kg")
-            }
-            
-            
-            Text("Informações adicionais: ")
-                .appFontDarkerGrotesque(darkness: .Black, size: 22)
-            Text("\(pet.infos)")
-            
-            Divider()
-            
-            HStack {
-                Text("Documentos")
-                    .appFontDarkerGrotesque(darkness: .Black, size: 22)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                Divider()
                 
-                Spacer()
-                
-                Button {
-                    isImporterPresented.toggle()
-                } label: {
-                    Image(systemName: "plus")
-                }
-            }
-            
-            ScrollView(.horizontal) {
                 HStack {
-                    ForEach(pet.petDocuments) { document in
-                        DocumentPreviewButton(pet: $pet, document: document)
+                    Text("Nasc:")
+                        .appFontDarkerGrotesque(darkness: .Black, size: 22)
+                    Text(pet.birthDate.formatted(date: .numeric, time: .omitted))
+                        .appFontDarkerGrotesque(darkness: .SemiBold, size: 22)
+                    Spacer()
+                    Text("\(pet.petAge) ANOS")
+                }
+                .padding(.top, 20)
+                
+                HStack {
+                    Text("Raça: ")
+                        .appFontDarkerGrotesque(darkness: .Black, size: 22)
+                    Text(pet.breed)
+                }
+                
+                HStack {
+                    Text("Genero: ")
+                        .appFontDarkerGrotesque(darkness: .Black, size: 22)
+                    Text(petGender)
+                }
+                
+                Divider()
+                
+                HStack {
+                    Text("Castração: ")
+                        .appFontDarkerGrotesque(darkness: .Black, size: 22)
+                    Text(petCastrationStatus)
+                }
+                
+                HStack {
+                    Text("Peso: ")
+                        .appFontDarkerGrotesque(darkness: .Black, size: 22)
+                    Text("\(numberFormatter.string(from: pet.weight as NSNumber) ?? "0.0") kg")
+                }
+                
+                
+                Text("Informações adicionais: ")
+                    .appFontDarkerGrotesque(darkness: .Black, size: 22)
+                Text("\(pet.infos)")
+                
+                Divider()
+                
+                HStack {
+                    Text("Documentos")
+                        .appFontDarkerGrotesque(darkness: .Black, size: 22)
+                    
+                    Spacer()
+                    
+                    Button {
+                        isImporterPresented.toggle()
+                    } label: {
+                        Image(systemName: "plus")
                     }
                 }
-            }
-            .padding(.bottom, 20)
-        }
-        .foregroundStyle(Color.AppColors.secondary60BlueishGray)
-        .font(.appFontDarkerGrotesque(darkness: .SemiBold, size: 22))
-        .padding(.horizontal, 32)
-        .background {
-            CustomRoundedRectangle(topRadius: 0, bottomRadius: 20)
-                .foregroundStyle(Color.AppColors.primary20NearWhite)
-                .overlay {
-                    CustomRoundedRectangle(topRadius: 0, bottomRadius: 20)
-                        .stroke(lineWidth: 2)
-                        .foregroundStyle(Color.AppColors.secondary60BlueishGray)
+                
+                ScrollView(.horizontal) {
+                    HStack {
+                        ForEach(pet.petDocuments) { document in
+                            DocumentPreviewButton(pet: $pet, document: document)
+                        }
+                    }
                 }
-        }
-        .fileImporter(
-            isPresented: $isImporterPresented,
-            allowedContentTypes: [.pdf, .image, .plainText, .data],
-            allowsMultipleSelection: false
-        ) { result in
-            switch result {
-            case .success(let urls):
-                tempURL = urls.first
-                
-                let document = PetDocument(title: tempURL!.lastPathComponent, fileURL: tempURL!)
-                
-                pet.petDocuments.append(document)
-                
-                let viewModel = PetViewModel.shared
-                viewModel.updatePet(context: context, pet: pet)
-            case .failure(let error):
-                print("Erro na importação: \(error.localizedDescription)")
+                .padding(.bottom, 20)
+            }
+            .foregroundStyle(Color.AppColors.secondary60BlueishGray)
+            .font(.appFontDarkerGrotesque(darkness: .SemiBold, size: 22))
+            .padding(.horizontal, 32)
+            .background {
+                CustomRoundedRectangle(topRadius: 0, bottomRadius: 20)
+                    .foregroundStyle(Color.AppColors.primary20NearWhite)
+            }
+            .fileImporter(
+                isPresented: $isImporterPresented,
+                allowedContentTypes: [.pdf, .image, .plainText, .data],
+                allowsMultipleSelection: false
+            ) { result in
+                switch result {
+                case .success(let urls):
+                    tempURL = urls.first
+                    
+                    let document = PetDocument(title: tempURL!.lastPathComponent, fileURL: tempURL!)
+                    
+                    pet.petDocuments.append(document)
+                    
+                    let viewModel = PetViewModel.shared
+                    viewModel.updatePet(context: context, pet: pet)
+                case .failure(let error):
+                    print("Erro na importação: \(error.localizedDescription)")
+                }
+            }
+            .padding(.horizontal, 2)
+            .padding(.bottom, 2)
+            .background {
+                CustomRoundedRectangle(topRadius: 0, bottomRadius: 20)
+                    .foregroundStyle(Color.AppColors.secondary60BlueishGray)
             }
         }
     }
@@ -192,7 +197,7 @@ struct DocumentPreviewButton: View {
                             } label: {
                                 Text("Voltar")
                             }
-
+                            
                         }
                         ToolbarItem(placement: .principal) {
                             Text(document.title)
@@ -214,12 +219,12 @@ struct DocumentPreviewButton: View {
                             } label: {
                                 Text("Editar")
                             }
-
+                            
                         }
                     }
                     .navigationBarTitleDisplayMode(.inline)
                     .alert("Novo nome para o documento", isPresented: $isShowingNewNameAlert) {
-                                TextField("Nome do documento", text: $newName)
+                        TextField("Nome do documento", text: $newName)
                         Button("OK", action: {
                             let index = pet.petDocuments.firstIndex(where: { $0 == document})
                             
@@ -227,7 +232,7 @@ struct DocumentPreviewButton: View {
                             
                             savePet()
                         })
-                            }
+                    }
                     .alert("Excluir documento", isPresented: $isShowingExcludingAlert) {
                         Button("Cancelar", role: .cancel) {
                             isShowingExcludingAlert.toggle()

@@ -10,27 +10,22 @@ import SwiftData
 import UniformTypeIdentifiers
 
 struct PetDocumentsView: View {
-    @ObservedObject var petCreationViewModel: PetCreationViewModel
-    @Binding var path: NavigationPath
-    
-    private var viewModel = PetViewModel.shared
-
     @Environment(\.dismiss) var dismiss
-    @Environment(\.modelContext) private var context
-    @State private var buttonPressed: Bool = false
-    @State private var isImporterPresented = false
+    @Environment(\.modelContext) var context
+        
+    @Binding var petCreationViewModel: PetCreationViewModel
+    @Binding var path: NavigationPath
+    var viewModel = PetViewModel.shared
 
-    @State private var tempTitle: String = ""
-    @State private var tempURL: URL?
+    @State var buttonPressed: Bool = false
+    @State var isImporterPresented = false
+
+    @State var tempTitle: String = ""
+    @State var tempURL: URL?
 
     var showBottomButton: Bool {
         !(petCreationViewModel.petDocuments.count >= 2 ||
           (petCreationViewModel.petDocuments.count >= 1 && tempURL != nil))
-    }
-    
-    init(petCreationViewModel: PetCreationViewModel, path: Binding<NavigationPath>) {
-        self.petCreationViewModel = petCreationViewModel
-        self._path = path
     }
 
     var body: some View {

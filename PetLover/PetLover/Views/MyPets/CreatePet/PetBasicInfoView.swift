@@ -10,8 +10,9 @@ import Foundation
 import SwiftData
 
 struct PetBasicInfoView: View {
-    @ObservedObject var petCreationViewModel: PetCreationViewModel
     @Environment(\.dismiss) var dismiss
+    
+    @Binding var petCreationViewModel: PetCreationViewModel
     @Binding var path: NavigationPath
     
     @State private var showGenderPicker: Bool = false
@@ -171,79 +172,5 @@ struct PetBasicInfoView: View {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         return formatter.string(from: date)
-    }
-}
-
-private struct FluxoAdicionarPet: View {
-    @State var path = NavigationPath()
-    @StateObject var petCreationViewModel = PetCreationViewModel()
-    var petViewModel = PetViewModel.shared
-    
-    var body: some View {
-        NavigationStack(path: $path) {
-                VStack {
-                    Button(action: {
-                        path.append(Destination.petBasicInfo)
-                    }) {
-                        Text("Adicionar Pet")
-                            .font(.title)
-                            .padding()
-                            .background(Color.AppColors.primary30Beige)
-                    }
-                    
-                    Button(action: {
-//                        path.append(Destination.reminderForms)
-                    }) {
-                        Text("Adicionar lembrete")
-                            .font(.title)
-                            .padding()
-                            .background(Color.AppColors.primary30Beige)
-                    }
-                    
-                    if petViewModel.pets.isEmpty {
-                        Text("Nenhum pet cadastrado.")
-                            .padding()
-                    } else {
-                        ForEach(petViewModel.pets, id: \.self) { pet in
-                            HStack {
-                                VStack(alignment: .leading, spacing: 8) {
-                                    Text(pet.name)
-                                    Text("Data de nascimento: \(pet.birthDate.formatted(date: .abbreviated, time: .omitted))")
-                                    Text("Espécie: \(pet.specie.rawValue)")
-                                    Text("Raça: \(pet.breed)")
-                                    Text("Castrado: \(pet.castrationStatus.rawValue)")
-                                    Text(String(format: "Peso: %.2f kg", pet.weight))
-                                    Text("Informações: \(pet.infos)")
-                                    Text("Sexo: \(pet.gender.rawValue)")
-                                    Text("Documentos: \(pet.petDocuments.count) documento(s)")
-                                }
-                                if let photoData = pet.photo,
-                                   let uiImage = UIImage(data: photoData) {
-                                    Image(uiImage: uiImage)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(height: 100)
-                                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                                }
-                            }
-                            .padding()
-                            .background(Color.gray.opacity(0.1))
-                        }
-                    }
-                }
-                .navigationDestination(for: Destination.self) { destination in
-                    switch destination {
-                    case .petDocuments:
-                        PetDocumentsView(petCreationViewModel: petCreationViewModel, path: $path)
-                    case .petMedicalConditions:
-                        PetMedicalConditionsView(petCreationViewModel: petCreationViewModel, path: $path)
-                    case .petProfile:
-                        PetProfileView(petCreationViewModel: petCreationViewModel, path: $path)
-                    case .petBasicInfo:
-                        PetBasicInfoView(petCreationViewModel: petCreationViewModel, path: $path
-                        )
-                    }
-                }
-        }
     }
 }

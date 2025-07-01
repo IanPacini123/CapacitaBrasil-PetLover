@@ -11,8 +11,9 @@ import PhotosUI
 // substituir aqui o botau
 
 struct PetProfileView: View {
-    @ObservedObject var petCreationViewModel: PetCreationViewModel
     @Environment(\.dismiss) var dismiss
+    
+    @Binding var petCreationViewModel: PetCreationViewModel
     @Binding var path: NavigationPath
     
     @State private var selectedItem: PhotosPickerItem? = nil
