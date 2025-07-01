@@ -7,18 +7,37 @@
 
 import SwiftUI
 
+enum Destination: Hashable {
+    case petDocuments
+    case petMedicalConditions
+    case petProfile
+    case petBasicInfo
+}
+
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView {
+            PetHomeView()
+                .tabItem {
+                    Label("Início", systemImage: "house")
+                }
+                        
+            PetList()
+                .tabItem {
+                    Label("Pets", image: "IconPaw")
+                }
+            
+            
+            ConfigView()
+                .tabItem {
+                    Label("Ajustes", image: "IconGear")
+                }
         }
-        .padding()
     }
 }
 
 #Preview {
     ContentView()
 }
+
+
