@@ -15,60 +15,41 @@ struct PetListCard: View {
     @State var topRadius: CGFloat = 20
     @State var bottomRadius: CGFloat = 0
     
+    @Binding var returnSwitch: Bool
+    
     @State var isSelected: Bool = false
-    @State var isShowingStats: Bool = false
+    @State var isShowingDetails: Bool = false
     
     var action: () -> Void
+    var proxyFunc: () -> Void
     
     var body: some View {
         VStack(spacing: 0) {
             ZStack(alignment: .bottom) {
-                CustomRoundedRectangle(topRadius: topRadius, bottomRadius: 20)
-                    .stroke(lineWidth: 2)
-                    .foregroundStyle(Color.AppColors.secondary60BlueishGray)
-                    .background {
-                        if let data = pet.photo, let image = UIImage(data: data) {
-                            Image(uiImage: image)
-                                .resizable()
-                                .scaledToFill()
-                        } else {
-                            Image("Fotossintese")
-                                .resizable()
-                                .scaledToFill()
-                        }
+                Group {
+                    if let data = pet.photo, let image = UIImage(data: data) {
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(height: isSelected ? 224 : 150)
+                            .clipShape(CustomRoundedRectangle(topRadius: isSelected ? 0 : 16, bottomRadius: 16))
+                    } else {
+                        Image("Fotossintese")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(height: isSelected ? 224 : 150)
+                            .clipShape(CustomRoundedRectangle(topRadius: isSelected ? 0 : 16, bottomRadius: 16))
                     }
-                    .frame(height: (isSelected ? 224 : 150))
-                    .clipShape(CustomRoundedRectangle(topRadius: topRadius, bottomRadius: 20))
-                    .padding(.horizontal, hPadding)
-                    .onTapGesture {
-                        withAnimation {
-                            action()
-                            
-                            isSelected.toggle()
-                            if isSelected {
-                                hPadding = 0
-                                topRadius = 0
-                                bottomRadius = 20
-                            } else {
-                                hPadding = 16
-                                topRadius = 20
-                                bottomRadius = 0
-                            }
-                        } completion: {
-                            withAnimation {
-                                isShowingStats.toggle()
-                            }
-                        }
-                    }
-                
+                }
+                .zIndex(1)
+                .padding(2)
+                .background {
+                    CustomRoundedRectangle(topRadius: isSelected ? 0 : 20, bottomRadius: 20)
+                        .foregroundStyle(Color.AppColors.secondary60BlueishGray)
+                }
                 CustomRoundedRectangle(topRadius: 20, bottomRadius: 0)
-                    .foregroundStyle(Color.AppColors.primary20NearWhite)
                     .frame(height: 46)
-                    .overlay {
-                        CustomRoundedRectangle(topRadius: 20, bottomRadius: 0)
-                            .stroke(lineWidth: 2)
-                            .foregroundStyle(Color.AppColors.secondary60BlueishGray)
-                    }
+                    .foregroundStyle(Color.AppColors.primary20NearWhite)
                     .overlay {
                         HStack {
                             Text(pet.name)
@@ -77,31 +58,55 @@ struct PetListCard: View {
                             Spacer()
                             
                             if !isSelected {
-                                Text("\(pet.petAge) ANOS")
+                                Text("\(pet.petAge) anos")
                                     .appFontDarkerGrotesque(darkness: .SemiBold, size: 20)
                             }
                         }
-                        .foregroundStyle(Color.AppColors.secondary60BlueishGray)
                         .padding(.horizontal, 28)
                     }
-                    .padding(.horizontal, 36)
-                    .zIndex(1)
+                    .zIndex(2)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 2)
             }
-            .zIndex(1)
+            .onTapGesture {
+                action()
+                withAnimation(.linear(duration: 0.2)) {
+                    isSelected.toggle()
+                } completion: {
+                    withAnimation(.bouncy(duration: 0.5)) {
+                        isShowingDetails.toggle()
+                    } completion: {
+                        proxyFunc()
+                    }
+                }
+            }
+            .padding(.horizontal,  isSelected ? 0 : 16)
             
-            if isShowingStats {
+            if isShowingDetails {
                 PetListCardDetail(pet: pet)
-                .transition (
-                    .asymmetric (
-                        insertion: .move(edge: .top),
-                        removal: .move(edge: .top)
+                    .transition (
+                        .asymmetric (
+                            insertion: .move(edge: .top),
+                            removal: .move(edge: .top)
+                        )
                     )
-                )
-                .padding(.horizontal, 36)
-                .zIndex(0)
+                    .zIndex(0)
+                    .padding(.horizontal, isSelected ? 18 : (18+16))
+                    .padding(.top, -2)
             }
         }
         .clipped()
+        .onChange(of: returnSwitch) { oldValue, newValue in
+            withAnimation(.linear(duration: 0.2)) {
+                isSelected = false
+            } completion: {
+                withAnimation(.bouncy(duration: 0.5)) {
+                    isShowingDetails = false
+                } completion: {
+                    proxyFunc()
+                }
+            }
+        }
     }
 }
 
@@ -113,5 +118,5 @@ struct PetListCard: View {
                            castrationStatus: .yes,
                            weight: 6.90,
                            infos: "De oliveira",
-                           gender: .male), action: {})
+                           gender: .male), returnSwitch: .constant(false), action: {}, proxyFunc: {})
 }

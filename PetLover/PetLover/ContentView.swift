@@ -21,9 +21,7 @@ struct ContentView: View {
                 .tabItem {
                     Label("Início", systemImage: "house")
                 }
-            
-            // TODO: Substituir essas pethomeview pelas views certas
-            
+                        
             PetList()
                 .tabItem {
                     Label("Pets", image: "IconPaw")

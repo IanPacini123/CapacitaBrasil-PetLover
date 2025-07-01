@@ -9,30 +9,85 @@ import SwiftUI
 
 struct PetList: View {
     @Environment(\.modelContext) private var context
+    @State var path = NavigationPath()
+    
+    @State var petCreationViewModel = PetCreationViewModel()
     
     @State var petList: [Pet] = PetViewModel.shared.pets
     
-    @State var hasSelection: Bool = false
     @State var selectedPet: Pet? = nil
     
+    @State var returnSwitch: Bool = false
+    
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             ScrollView {
                 ScrollViewReader { proxy in
-                    ForEach(petList) { pet in
-                        if !(pet != selectedPet && hasSelection) {
-                            PetListCard(pet: pet) {
-                                proxy.scrollTo(pet.id, anchor: .top)
-                                hasSelection.toggle()
+                    ForEach(PetViewModel.shared.pets) { pet in
+                        PetListCard(pet: pet, returnSwitch: $returnSwitch) {
+                            proxy.scrollTo(pet.id, anchor: .top)
+                            if selectedPet == nil {
                                 self.selectedPet = pet
+                            } else {
+                                self.selectedPet = nil
                             }
-                            .id(pet.id)
+                        } proxyFunc: {
+                            proxy.scrollTo(pet.id, anchor: .top)
+                        }
+                        .id(pet.id)
+                        .opacity(selectedPet != nil ? (pet.id == selectedPet?.id ? 1 : 0) : 1)
+                    }
+                }
+            }
+            .scrollDisabled(selectedPet != nil)
+            .onAppear {
+                PetViewModel.shared.fetchPets(context: context)
+            }
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    if selectedPet != nil {
+                        Text("Meu Pet")
+                    } else {
+                        Text("Meus Pets")
+                    }
+                }
+                
+                if selectedPet != nil {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button {
+                            selectedPet = nil
+                            returnSwitch.toggle()
+                        } label: {
+                            Image(systemName: "chevron.left")
+                        }
+                    }
+                } else {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            path.append(Destination.petBasicInfo)
+                        } label: {
+                            Image(systemName: "plus")
                         }
                     }
                 }
             }
-            .onAppear {
-                PetViewModel.shared.fetchPets(context: context)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(for: Destination.self) { destination in
+                switch destination {
+                case .petDocuments:
+                    PetDocumentsView(petCreationViewModel: $petCreationViewModel, path: $path)
+                case .petMedicalConditions:
+                    PetMedicalConditionsView(petCreationViewModel: $petCreationViewModel, path: $path)
+                case .petProfile:
+                    PetProfileView(petCreationViewModel: $petCreationViewModel, path: $path)
+                case .petBasicInfo:
+                    PetBasicInfoView(petCreationViewModel: $petCreationViewModel, path: $path)
+                }
+            }
+            .safeAreaPadding(.bottom)
+            .background {
+                Color.AppColors.primary20NearWhite
+                    .ignoresSafeArea()
             }
         }
     }
