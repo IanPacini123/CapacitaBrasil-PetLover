@@ -22,3 +22,9 @@ extension Font {
         return Font.custom(darkness.rawValue, size: size)
     }
 }
+
+// escrevendo aqui um codigo para testar
+
+enum types:String {
+    case water, earth
+}
